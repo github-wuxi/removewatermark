@@ -4,7 +4,8 @@
  */
 package com.wangxi.removewatermark.common.utils;
 
-import com.alibaba.common.lang.StringUtil;
+import org.apache.commons.lang3.StringUtils;
+
 import com.wangxi.removewatermark.common.utils.constants.CharsetConstants;
 
 /**
@@ -23,8 +24,8 @@ public class MethodUtil {
     public static String getCallMethod(Class clz) {
         StringBuilder sb = new StringBuilder();
 
-        String className = StringUtil.EMPTY_STRING;
-        String methodName = StringUtil.EMPTY_STRING;
+        String className = StringUtils.EMPTY;
+        String methodName = StringUtils.EMPTY;
 
         // 获取调用堆栈
         StackTraceElement[] elements = new Throwable().getStackTrace();
@@ -32,7 +33,7 @@ public class MethodUtil {
         // 遍历当前堆栈，往上推一层即为实际调用方法
         if (elements != null && elements.length > 0) {
             for (int i = 0; i < elements.length; i++) {
-                if (StringUtil.equals(clz.getName(), elements[i].getClassName())) {
+                if (StringUtils.equals(clz.getName(), elements[i].getClassName())) {
                     if (i + 1 < elements.length) {
                         className = elements[i + 1].getClassName();
                         methodName = elements[i + 1].getMethodName();
@@ -43,10 +44,10 @@ public class MethodUtil {
         }
 
         // 拼接成“类.方法”字符串返回
-        if (StringUtil.isNotBlank(className)) {
+        if (StringUtils.isNotBlank(className)) {
             sb.append(className);
         }
-        if (StringUtil.isNotBlank(methodName)) {
+        if (StringUtils.isNotBlank(methodName)) {
             sb.append(CharsetConstants.DOT).append(methodName);
         }
 
@@ -60,13 +61,13 @@ public class MethodUtil {
      * @return {@link String}
      */
     public static String getPureCallMethodName(Class clz) {
-        String methodName = StringUtil.EMPTY_STRING;
+        String methodName = StringUtils.EMPTY;
         //获取调用堆栈
         StackTraceElement[] elements = new Throwable().getStackTrace();
         //遍历当前堆栈，往上推一层即为实际调用方法
         if (elements != null && elements.length > 0) {
             for (int i = 0; i < elements.length; i++) {
-                if (StringUtil.equals(clz.getName(), elements[i].getClassName())) {
+                if (StringUtils.equals(clz.getName(), elements[i].getClassName())) {
                     if (i + 1 < elements.length) {
                         methodName = elements[i + 1].getMethodName();
                     }

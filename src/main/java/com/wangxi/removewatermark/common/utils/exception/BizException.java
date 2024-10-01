@@ -4,7 +4,6 @@
  */
 package com.wangxi.removewatermark.common.utils.exception;
 
-import com.alibaba.common.lang.ArrayUtil;
 import com.wangxi.removewatermark.common.servicefacade.enums.ErrorCodeEnum;
 import com.wangxi.removewatermark.common.utils.constants.CharsetConstants;
 
@@ -63,7 +62,7 @@ public class BizException extends RuntimeException {
         }
         String errorCodeStr = CharsetConstants.LEFT_SQUARE_BRACKET + errorCode.getResultCode()
             + CharsetConstants.RIGHT_SQUARE_BRACKET;
-        if (ArrayUtil.isEmpty(arguments)) {
+        if (arguments == null || arguments.length == 0) {
             return errorCodeStr + errorCode.getResultDesc();
         } else {
             return errorCodeStr + String.format(errorCode.getResultDesc(), arguments);

@@ -15,7 +15,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 
-import com.alibaba.common.lang.StringUtil;
+import org.apache.commons.lang3.StringUtils;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
 import com.wangxi.removewatermark.common.servicefacade.enums.VideoSourceEnum;
@@ -46,7 +46,7 @@ public class DouYinParser extends AbstractParser {
             throw new BizException(ErrorCodeEnum.ILLEGAL_VIDEO_URL);
         }
         String videoId = matcher.group(1);
-        if (StringUtil.isBlank(videoId)) {
+        if (StringUtils.isBlank(videoId)) {
             throw new BizException(ErrorCodeEnum.ILLEGAL_VIDEO_URL);
         }
 
@@ -54,7 +54,7 @@ public class DouYinParser extends AbstractParser {
         String dyWebApi = "https://www.iesdouyin.com/share/video/" + videoId;
         HttpHeaders httpHeaders = fetchHttpHeaders(dyWebApi, null);
         String content = fetchHttpEntity(dyWebApi, httpHeaders, HttpMethod.GET, null, String.class);
-        if (StringUtil.isBlank(content)) {
+        if (StringUtils.isBlank(content)) {
             throw new BizException(ErrorCodeEnum.WEB_API_CALL_FAIL);
         }
 

@@ -15,7 +15,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.client.RestTemplate;
 
-import com.alibaba.common.lang.StringUtil;
+import org.apache.commons.lang3.StringUtils;
 import com.wangxi.removewatermark.common.utils.constants.CharsetConstants;
 
 /**
@@ -41,7 +41,7 @@ public abstract class AbstractParser implements Parser {
     protected String convertSetCookieToCookie(HttpHeaders httpHeaders) {
         List<String> setCookieList = httpHeaders.get(HttpHeaders.SET_COOKIE);
         if (CollectionUtils.isEmpty(setCookieList)) {
-            return StringUtil.EMPTY_STRING;
+            return StringUtils.EMPTY;
         }
         StringBuilder cookie = new StringBuilder();
         for (String setCookie : setCookieList) {
@@ -66,7 +66,7 @@ public abstract class AbstractParser implements Parser {
         httpHeaders.set(HttpHeaders.USER_AGENT, "Mozilla/5.0 (Linux; Android 5.0; SM-G900P Build/LRX21T)" +
             "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Mobile Safari/537.36");
         httpHeaders.set(HttpHeaders.REFERER, url);
-        if (StringUtil.isNotBlank(cookie)) {
+        if (StringUtils.isNotBlank(cookie)) {
             httpHeaders.set(HttpHeaders.COOKIE, cookie);
         }
         return httpHeaders;
