@@ -7,7 +7,7 @@ package com.wangxi.removewatermark.common.servicefacade.enums;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.alibaba.common.lang.StringUtil;
+import org.apache.commons.lang3.StringUtils;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -77,7 +77,7 @@ public enum VideoSourceEnum {
      * @return {@link VideoSourceEnum}
      */
     public static VideoSourceEnum getByUrl(String url) {
-        if (StringUtil.isBlank(url)) {
+        if (StringUtils.isBlank(url)) {
             return null;
         }
         for (VideoSourceEnum item : VideoSourceEnum.values()) {

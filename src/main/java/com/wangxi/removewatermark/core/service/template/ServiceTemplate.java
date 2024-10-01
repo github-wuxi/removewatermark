@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StopWatch;
 
-import com.alibaba.common.lang.StringUtil;
+import org.apache.commons.lang3.StringUtils;
 import com.wangxi.removewatermark.common.servicefacade.enums.ErrorCodeEnum;
 import com.wangxi.removewatermark.common.servicefacade.model.BaseResult;
 import com.wangxi.removewatermark.common.utils.MethodUtil;
@@ -69,15 +69,15 @@ public class ServiceTemplate {
 
             // 摘要日志处理
             stopWatch.stop();
-            String extraDigestStr = StringUtil.EMPTY_STRING;
+            String extraDigestStr = StringUtils.EMPTY;
             List<String> extraDigestLogItemList = callback.extraDigestLogItemList();
             if (!CollectionUtils.isEmpty(extraDigestLogItemList)) {
                 extraDigestStr = String.join(CharsetConstants.COMMA, extraDigestLogItemList);
             }
             // 摘要打印：方法名、耗时、是否成功、是否可重试、结果码、额外摘要
             LOGGER.info(String.format("%s,%s,%s,%s,%s,%s", declareMethod, stopWatch.getTotalTimeMillis(), result.isSuccess(),
-                result.getErrorCode() == null ? StringUtil.EMPTY_STRING : result.getErrorCode().isRetryFail(),
-                result.getErrorCode() == null ? StringUtil.EMPTY_STRING : result.getErrorCode().getResultCode(),
+                result.getErrorCode() == null ? StringUtils.EMPTY : result.getErrorCode().isRetryFail(),
+                result.getErrorCode() == null ? StringUtils.EMPTY : result.getErrorCode().getResultCode(),
                 extraDigestStr));
         }
     }

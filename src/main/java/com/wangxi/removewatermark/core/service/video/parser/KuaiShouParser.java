@@ -13,7 +13,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 
-import com.alibaba.common.lang.StringUtil;
+import org.apache.commons.lang3.StringUtils;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
 import com.wangxi.removewatermark.common.servicefacade.enums.ErrorCodeEnum;
@@ -60,7 +60,7 @@ public class KuaiShouParser extends AbstractParser {
         params.put("photoId", videoId);
         String content = fetchHttpEntity("https://m.gifshow.com/rest/wd/photo/info?kpn=KUAISHOU&captchaToken=",
             httpHeaders, HttpMethod.POST, params, String.class);
-        if (StringUtil.isBlank(content)) {
+        if (StringUtils.isBlank(content)) {
             throw new BizException(ErrorCodeEnum.WEB_API_CALL_FAIL);
         }
 

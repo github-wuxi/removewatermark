@@ -8,7 +8,7 @@ import java.util.Collection;
 
 import org.springframework.util.CollectionUtils;
 
-import com.alibaba.common.lang.StringUtil;
+import org.apache.commons.lang3.StringUtils;
 import com.wangxi.removewatermark.common.servicefacade.enums.ErrorCodeEnum;
 import com.wangxi.removewatermark.common.utils.exception.BizException;
 
@@ -54,7 +54,7 @@ public class AssertUtil {
      * @param args     错误参数
      */
     public static void assertNotBlank(String str, String errorMsg, Object... args) {
-        if (StringUtil.isBlank(str)) {
+        if (StringUtils.isBlank(str)) {
             bizIllegalArgumentException(errorMsg, args);
         }
     }
