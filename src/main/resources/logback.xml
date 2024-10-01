@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="false">
+    <springProperty scope="context" name="logging_level" source="project.logging.level" defaultValue="INFO"/>
+    <property name="logging_path" value="./logs"/>
+    <property name="logging_pattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread][%X{traceId}] %-5level %logger{50} - %msg%n"/>
+
+    <appender name="BIZ-APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <append>true</append>
+        <file>${logging_path}/biz.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${logging_path}/biz.log.%d{yyyy-MM-dd}</FileNamePattern>
+            <MaxHistory>7</MaxHistory>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${logging_pattern}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <MaxFileSize>100MB</MaxFileSize>
+        </triggeringPolicy>
+    </appender>
+
+    <appender name="CORE-APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <append>true</append>
+        <file>${logging_path}/core.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${logging_path}/core.log.%d{yyyy-MM-dd}</FileNamePattern>
+            <MaxHistory>7</MaxHistory>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${logging_pattern}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <MaxFileSize>100MB</MaxFileSize>
+        </triggeringPolicy>
+    </appender>
+
+    <appender name="COMMON-APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <append>true</append>
+        <file>${logging_path}/common.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${logging_path}/common.log.%d{yyyy-MM-dd}</FileNamePattern>
+            <MaxHistory>7</MaxHistory>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${logging_pattern}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <MaxFileSize>100MB</MaxFileSize>
+        </triggeringPolicy>
+    </appender>
+
+    <appender name="COMMON-DAL-DIGEST-LOGGER-APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <append>true</append>
+        <file>${logging_path}/common-dal-digest.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${logging_path}/common-dal-digest.log.%d{yyyy-MM-dd}</FileNamePattern>
+            <MaxHistory>7</MaxHistory>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${logging_pattern}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <MaxFileSize>100MB</MaxFileSize>
+        </triggeringPolicy>
+    </appender>
+
+    <appender name="CORE-SERVICE-DIGEST-LOGGER-APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <append>true</append>
+        <file>${logging_path}/core-service-digest.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${logging_path}/core-service-digest.log.%d{yyyy-MM-dd}</FileNamePattern>
+            <MaxHistory>7</MaxHistory>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${logging_pattern}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <MaxFileSize>100MB</MaxFileSize>
+        </triggeringPolicy>
+    </appender>
+
+    <appender name="ERROR-APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <append>true</append>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>error</level>
+        </filter>
+        <file>${logging_path}/error.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${logging_path}/error.log.%d{yyyy-MM-dd}</FileNamePattern>
+            <MaxHistory>7</MaxHistory>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${logging_pattern}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <MaxFileSize>100MB</MaxFileSize>
+        </triggeringPolicy>
+    </appender>
+
+    <!--这里指定到了具体的某一个类-->
+    <logger name="com.wangxi.removewatermark.biz" level="${logging_level}" additivity="false">
+        <appender-ref ref="BIZ-APPENDER" />
+        <appender-ref ref="ERROR-APPENDER" />
+    </logger>
+    <logger name="com.wangxi.removewatermark.core" level="${logging_level}" additivity="false">
+        <appender-ref ref="CORE-APPENDER" />
+        <appender-ref ref="ERROR-APPENDER" />
+    </logger>
+    <logger name="com.wangxi.removewatermark.common" level="${logging_level}" additivity="false">
+        <appender-ref ref="COMMON-APPENDER" />
+        <appender-ref ref="ERROR-APPENDER" />
+    </logger>
+
+    <logger name="CORE-SERVICE-DIGEST-LOGGER" level="${logging_level}" additivity="false">
+        <appender-ref ref="CORE-SERVICE-DIGEST-LOGGER-APPENDER" />
+    </logger>
+    <logger name="COMMON-DAL-DIGEST-LOGGER" level="${logging_level}" additivity="false">
+        <appender-ref ref="COMMON-DAL-DIGEST-LOGGER-APPENDER" />
+    </logger>
+
+</configuration>
