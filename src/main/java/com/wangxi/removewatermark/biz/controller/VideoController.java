@@ -40,7 +40,6 @@ public class VideoController {
     @RequestMapping(value = "/parseVideo.json", method = { RequestMethod.GET, RequestMethod.POST })
     @ResponseBody
     public BaseResult parseVideo(String url, String userId) {
-
         return videoService.parseVideo(url, userId);
     }
 }

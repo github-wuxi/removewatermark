@@ -45,7 +45,7 @@ public class KuaiShouParser extends AbstractParser {
         String url = matcher.group(1);
 
         // 2、获取重定向后的地址，来获取视频id
-        HttpHeaders headForResponse = restTemplate.headForHeaders(url);
+        HttpHeaders headForResponse = restTemplateService.headForHeaders(url);
         url = headForResponse.getLocation().toString();
         // videoId解析
         Matcher videoIdmatcher = Pattern.compile("photoId=([^&]+)").matcher(url);
@@ -58,7 +58,7 @@ public class KuaiShouParser extends AbstractParser {
         HttpHeaders httpHeaders = fetchHttpHeaders(url, convertSetCookieToCookie(headForResponse));
         Map<String, Object> params = new HashMap<>();
         params.put("photoId", videoId);
-        String content = fetchHttpEntity("https://m.gifshow.com/rest/wd/photo/info?kpn=KUAISHOU&captchaToken=",
+        String content = restTemplateService.fetchHttpEntity("https://m.gifshow.com/rest/wd/photo/info?kpn=KUAISHOU&captchaToken=",
             httpHeaders, HttpMethod.POST, params, String.class);
         if (StringUtils.isBlank(content)) {
             throw new BizException(ErrorCodeEnum.WEB_API_CALL_FAIL);

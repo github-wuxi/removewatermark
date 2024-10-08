@@ -40,7 +40,7 @@ public class DouYinParser extends AbstractParser {
     @Override
     public VideoDTO parseVideo(String originalUrl) {
         // 1、获取重定向后的地址，来获取视频id
-        String url = restTemplate.headForHeaders(originalUrl).getLocation().toString();
+        String url = restTemplateService.headForHeaders(originalUrl).getLocation().toString();
         Matcher matcher = Pattern.compile("/share/video/([\\d]*)[/|?]").matcher(url);
         if (!matcher.find()) {
             throw new BizException(ErrorCodeEnum.ILLEGAL_VIDEO_URL);
@@ -53,7 +53,7 @@ public class DouYinParser extends AbstractParser {
         // 2、http调用api获取结果
         String dyWebApi = "https://www.iesdouyin.com/share/video/" + videoId;
         HttpHeaders httpHeaders = fetchHttpHeaders(dyWebApi, null);
-        String content = fetchHttpEntity(dyWebApi, httpHeaders, HttpMethod.GET, null, String.class);
+        String content = restTemplateService.fetchHttpEntity(dyWebApi, httpHeaders, HttpMethod.GET, null, String.class);
         if (StringUtils.isBlank(content)) {
             throw new BizException(ErrorCodeEnum.WEB_API_CALL_FAIL);
         }
