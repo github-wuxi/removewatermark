@@ -48,7 +48,7 @@ public enum ErrorCodeEnum {
     /**
      * 用户信息为空
      */
-    USER_INFO_NULL(false, "USER_INFO_NULL", "用户信息为空，请先登录"),
+    USER_INFO_NULL(false, "USER_INFO_NULL", "用户信息查询为空，请登录后再重试"),
     ;
 
     /**

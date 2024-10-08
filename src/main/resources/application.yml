@@ -1,6 +1,6 @@
 spring:
   datasource:
-    driver-class-name: com.mysql.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://172.25.21.82:3306/java_removewatermark?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf-8
     username: dms_wx
     password: Wx.080032
@@ -14,9 +14,10 @@ server:
   port: 10521
 
 project:
-  wx:
+  wechat:
     appId: wxfb7cde2737693e4b
     secret: 07a23136a66186025b779ac9e370fe53
+    user-sign-in-add-number: 3
 
   logging:
     level: INFO

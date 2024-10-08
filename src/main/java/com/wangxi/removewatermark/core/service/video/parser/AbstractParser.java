@@ -5,18 +5,15 @@
 package com.wangxi.removewatermark.core.service.video.parser;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Resource;
 
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.util.CollectionUtils;
-import org.springframework.web.client.RestTemplate;
 
 import org.apache.commons.lang3.StringUtils;
 import com.wangxi.removewatermark.common.utils.constants.CharsetConstants;
+import com.wangxi.removewatermark.core.service.resttemplate.RestTemplateService;
 
 /**
  * 解析器抽象类
@@ -27,10 +24,10 @@ import com.wangxi.removewatermark.common.utils.constants.CharsetConstants;
  */
 public abstract class AbstractParser implements Parser {
     /**
-     * http网络请求服务
+     * http请求服务
      */
     @Resource
-    protected RestTemplate restTemplate;
+    protected RestTemplateService restTemplateService;
 
     /**
      * 将set cookie转换为cookie
@@ -70,20 +67,5 @@ public abstract class AbstractParser implements Parser {
             httpHeaders.set(HttpHeaders.COOKIE, cookie);
         }
         return httpHeaders;
-    }
-
-    /**
-     * 获取HTTP实体
-     *
-     * @param url          url
-     * @param httpMethod   http方法
-     * @param params       参数
-     * @param responseType 响应类型
-     * @return {@link T}
-     */
-    protected <T> T fetchHttpEntity(String url, HttpHeaders httpHeaders,
-                                    HttpMethod httpMethod, Map<String, Object> params, Class<T> responseType) {
-        HttpEntity<?> httpEntity = new HttpEntity<>(params, httpHeaders);
-        return restTemplate.exchange(url, httpMethod, httpEntity, responseType).getBody();
     }
 }
