@@ -23,7 +23,7 @@ import com.wangxi.removewatermark.core.service.userinfo.UserInfoService;
  * @version $Id: UserController.java, v 0.1 2024-05-20 16:16 wuxi Exp $$
  */
 @RestController
-@RequestMapping("removewatermark/user")
+@RequestMapping("user")
 public class UserController {
     /**
      * 用户服务
