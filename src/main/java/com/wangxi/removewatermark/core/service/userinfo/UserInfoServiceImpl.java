@@ -83,6 +83,8 @@ public class UserInfoServiceImpl implements UserInfoService {
 
             @Override
             public void finalLog() {
+                LOGGER.info(String.format("用户登录，入参[code:%s, nickName:%s], 出参[baseResult:%s]",
+                    code, nickName, baseResult));
             }
 
             @Override
