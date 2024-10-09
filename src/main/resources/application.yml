@@ -11,7 +11,7 @@ spring:
     add-mappings: false
 
 server:
-  port: 8899
+  port: 10521
 
 project:
   wechat:
