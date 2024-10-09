@@ -41,17 +41,15 @@ public class BaseResult<T> {
     private String traceId;
 
     /**
-     * 构造方法
+     * 填充失败结果
      *
-     * @param success    成功
      * @param errorCode  错误代码
      * @param resultData 结果数据
      */
-    public BaseResult(boolean success, ErrorCodeEnum errorCode, T resultData) {
-        this.success = success;
-        this.errorCode = errorCode;
-        this.resultData = resultData;
-        traceId = MDC.get(LoggerConstants.TRACE_ID);
+    public static void fillFailureResult(BaseResult resultData, ErrorCodeEnum errorCode) {
+        resultData.setSuccess(false);
+        resultData.setErrorCode(errorCode);
+        resultData.setTraceId(MDC.get(LoggerConstants.TRACE_ID));
     }
 
     /**

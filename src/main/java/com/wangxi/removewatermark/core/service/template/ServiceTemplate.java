@@ -19,8 +19,6 @@ import com.wangxi.removewatermark.common.utils.constants.CharsetConstants;
 import com.wangxi.removewatermark.common.utils.constants.LoggerConstants;
 import com.wangxi.removewatermark.common.utils.exception.BizException;
 
-import lombok.extern.slf4j.Slf4j;
-
 /**
  * 服务模板
  *
@@ -28,12 +26,16 @@ import lombok.extern.slf4j.Slf4j;
  * @version $Id: ServiceTemplate.java, v 0.1 2024-05-20 16:35 wuxi Exp $$
  * @date 2024/05/20
  */
-@Slf4j
 public class ServiceTemplate {
+    /**
+     * 摘要日志记录器
+     */
+    private static final Logger DIGEST_LOGGER = LoggerFactory.getLogger(LoggerConstants.CORE_SERVICE_DIGEST_LOGGER);
+
     /**
      * 日志记录器
      */
-    private static final Logger LOGGER = LoggerFactory.getLogger(LoggerConstants.CORE_SERVICE_DIGEST_LOGGER);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ServiceTemplate.class);
 
     /**
      * 执行
@@ -58,11 +60,11 @@ public class ServiceTemplate {
 
             result.setSuccess(true);
         } catch (BizException e) {
-            log.warn(String.format("BizException, (method=%s, errorCode=%s, message=%s)", declareMethod, e.getResultCode(), e.getMessage()), e);
-            result = new BaseResult(false, ErrorCodeEnum.getByCode(e.getResultCode()), null);
+            LOGGER.warn(String.format("BizException, (method=%s, errorCode=%s, message=%s)", declareMethod, e.getResultCode(), e.getMessage()), e);
+            BaseResult.fillFailureResult(result, ErrorCodeEnum.getByCode(e.getResultCode()));
         } catch (Throwable e) {
-            log.error(String.format("Throwable, (method=%s, message=%s)", declareMethod, e.getMessage()), e);
-            result = new BaseResult(false, ErrorCodeEnum.UNKNOWN_EXCEPTION, null);
+            LOGGER.error(String.format("Throwable, (method=%s, message=%s)", declareMethod, e.getMessage()), e);
+            BaseResult.fillFailureResult(result, ErrorCodeEnum.UNKNOWN_EXCEPTION);
         } finally {
             // 执行服务打印
             callback.finalLog();
@@ -75,10 +77,9 @@ public class ServiceTemplate {
                 extraDigestStr = String.join(CharsetConstants.COMMA, extraDigestLogItemList);
             }
             // 摘要打印：方法名、耗时、是否成功、是否可重试、结果码、额外摘要
-            LOGGER.info(String.format("%s,%s,%s,%s,%s,%s", declareMethod, stopWatch.getTotalTimeMillis(), result.isSuccess(),
-                result.getErrorCode() == null ? StringUtils.EMPTY : result.getErrorCode().isRetryFail(),
-                result.getErrorCode() == null ? StringUtils.EMPTY : result.getErrorCode().getResultCode(),
-                extraDigestStr));
+            DIGEST_LOGGER.info(String.format("%s,%s,%s,%s,%s,%s", declareMethod, stopWatch.getTotalTimeMillis(),
+                result.isSuccess(), result.getErrorCode() == null ? StringUtils.EMPTY : result.getErrorCode().isRetryFail(),
+                result.getErrorCode() == null ? StringUtils.EMPTY : result.getErrorCode().getResultCode(), extraDigestStr));
         }
     }
 }
