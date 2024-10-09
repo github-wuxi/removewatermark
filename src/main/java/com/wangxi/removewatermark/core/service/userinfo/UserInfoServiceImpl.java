@@ -150,6 +150,7 @@ public class UserInfoServiceImpl implements UserInfoService {
             return true;
         }
         userInfoDO.setUserName(userName);
+        userInfoDO.setGmtModified(now);
         // 最新签到时间为今天代表不是今天第一次
         if (DateUtils.isSameDay(now, userInfoDO.getLatestSignInTime())) {
             userInfoDO.setLatestSignInTime(now);
