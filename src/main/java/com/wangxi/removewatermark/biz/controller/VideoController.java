@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -39,7 +40,7 @@ public class VideoController {
      */
     @RequestMapping(value = "/parseVideo.json", method = { RequestMethod.GET, RequestMethod.POST })
     @ResponseBody
-    public BaseResult parseVideo(String url, String userId) {
+    public BaseResult parseVideo(@RequestParam(name = "url") String url, @RequestParam(name = "userId") String userId) {
         return videoService.parseVideo(url, userId);
     }
 }

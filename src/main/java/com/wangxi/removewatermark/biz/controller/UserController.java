@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -39,7 +40,8 @@ public class UserController {
      */
     @RequestMapping(value = "/login.json", method = { RequestMethod.GET, RequestMethod.POST })
     @ResponseBody
-    public BaseResult<UserLoginResult> login(String code, String nickName) {
+    public BaseResult<UserLoginResult> login(@RequestParam(name = "code") String code,
+                                             @RequestParam(name = "nickName") String nickName) {
         return userInfoService.login(code, nickName);
     }
 }
