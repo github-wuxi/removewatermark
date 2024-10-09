@@ -41,7 +41,7 @@ public class WechatConfig {
     }
 
     @Value("${project.wechat.user-sign-in-add-number}")
-    public static void setUserSignInAddNumber(long userSignInAddNumber) {
+    private void setUserSignInAddNumber(long userSignInAddNumber) {
         WechatConfig.userSignInAddNumber = userSignInAddNumber;
     }
 
