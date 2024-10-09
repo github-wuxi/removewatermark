@@ -9,6 +9,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +24,7 @@ import com.wangxi.removewatermark.common.dal.dataobject.UserInfoDO;
 import com.wangxi.removewatermark.common.servicefacade.enums.ErrorCodeEnum;
 import com.wangxi.removewatermark.common.servicefacade.model.BaseResult;
 import com.wangxi.removewatermark.common.utils.AssertUtil;
+import com.wangxi.removewatermark.common.utils.exception.BizException;
 import com.wangxi.removewatermark.core.model.UserLoginResult;
 import com.wangxi.removewatermark.core.model.WechatConfig;
 import com.wangxi.removewatermark.core.service.resttemplate.RestTemplateService;
@@ -105,17 +107,16 @@ public class UserInfoServiceImpl implements UserInfoService {
         // 微信接口说明：https://developers.weixin.qq.com/miniprogram/dev/OpenApiDoc/user-login/code2Session.html
         String url = String.format("https://api.weixin.qq.com/sns/jscode2session?appid=%s&secret=%s&" +
             "js_code=%s&grant_type=authorization_code", WechatConfig.getAppId(), WechatConfig.getSecret(), code);
-
-        LOGGER.info(url);
-
         JSONObject result = JSONObject.parseObject(restTemplateService.fetchHttpEntity(url, null,
             HttpMethod.GET, null, String.class));
-
-        LOGGER.info(JSONObject.toJSONString(result));
-
-        AssertUtil.assertTrue(result != null && result.get("openid") != null, ErrorCodeEnum.USER_INFO_NULL);
+        if (result == null || result.get("openid") == null) {
+            throw new BizException(ErrorCodeEnum.USER_INFO_NULL);
+        }
         String openid = result.get("openid").toString();
-        AssertUtil.assertNotBlank(openid, result.get("errmsg").toString());
+        if (StringUtils.isBlank(openid)) {
+            String errMsg = result.get("errmsg") == null ? "用户微信开放id获取为空" : result.get("errmsg").toString();
+            throw new BizException(ErrorCodeEnum.ILLEGAL_ARGUMENTS, errMsg);
+        }
         return openid;
     }
 
