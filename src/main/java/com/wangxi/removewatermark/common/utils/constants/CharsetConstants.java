@@ -36,4 +36,9 @@ public class CharsetConstants {
      * 分号加空格
      */
     public static final String SEMICOLON_WITH_SPACE = "; ";
+
+    /**
+     * 破折号
+     */
+    public static final String DASH = "-";
 }

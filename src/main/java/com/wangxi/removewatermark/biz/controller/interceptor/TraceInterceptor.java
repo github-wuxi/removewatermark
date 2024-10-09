@@ -9,11 +9,12 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.MDC;
 import org.springframework.lang.Nullable;
-import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
+import com.wangxi.removewatermark.common.utils.constants.CharsetConstants;
 import com.wangxi.removewatermark.common.utils.constants.LoggerConstants;
 
 /**
@@ -23,7 +24,6 @@ import com.wangxi.removewatermark.common.utils.constants.LoggerConstants;
  * @version $Id: TraceInterceptor.java, v 0.1 2024-06-12 17:56 wuxi Exp $$
  * @date 2024/06/12
  */
-@Component
 public class TraceInterceptor implements HandlerInterceptor {
     /**
      * 前处理
@@ -35,7 +35,8 @@ public class TraceInterceptor implements HandlerInterceptor {
      */
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
-        MDC.put(LoggerConstants.TRACE_ID, UUID.randomUUID().toString());
+        MDC.put(LoggerConstants.TRACE_ID, UUID.randomUUID().toString()
+            .replace(CharsetConstants.DASH, StringUtils.EMPTY).toLowerCase());
         return true;
     }
 
