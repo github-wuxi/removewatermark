@@ -22,7 +22,7 @@ import com.wangxi.removewatermark.core.service.video.VideoService;
  * @date 2024/05/21
  */
 @RestController
-@RequestMapping("video")
+@RequestMapping("removewatermark/video")
 public class VideoController {
     /**
      * 视频服务
