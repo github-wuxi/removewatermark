@@ -105,9 +105,15 @@ public class UserInfoServiceImpl implements UserInfoService {
         // 微信接口说明：https://developers.weixin.qq.com/miniprogram/dev/OpenApiDoc/user-login/code2Session.html
         String url = String.format("https://api.weixin.qq.com/sns/jscode2session?appid=%s&secret=%s&" +
             "js_code=%s&grant_type=authorization_code", WechatConfig.getAppId(), WechatConfig.getSecret(), code);
+
+        LOGGER.info(url);
+
         JSONObject result = JSONObject.parseObject(restTemplateService.fetchHttpEntity(url, null,
             HttpMethod.GET, null, String.class));
-        AssertUtil.assertNotNull(result, ErrorCodeEnum.USER_INFO_NULL);
+
+        LOGGER.info(JSONObject.toJSONString(result));
+
+        AssertUtil.assertTrue(result != null && result.get("openid") != null, ErrorCodeEnum.USER_INFO_NULL);
         String openid = result.get("openid").toString();
         AssertUtil.assertNotBlank(openid, result.get("errmsg").toString());
         return openid;
