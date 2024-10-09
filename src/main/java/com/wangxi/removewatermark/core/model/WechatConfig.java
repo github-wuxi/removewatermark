@@ -30,7 +30,7 @@ public class WechatConfig {
      */
     private static long userSignInAddNumber;
 
-    @Value("${project.wechat.appId}")
+    @Value("${project.wechat.app-id}")
     private void setAppId(String appId) {
         WechatConfig.appId = appId;
     }
