@@ -20,7 +20,7 @@ public class UserLoginResult {
     private String openId;
 
     /**
-     * 今日是否首次登录，true代表是
+     * 今日首次登录文案
      */
-    private boolean todayFirstTimeLogin;
+    private String todayFirstTimeLoginText;
 }
