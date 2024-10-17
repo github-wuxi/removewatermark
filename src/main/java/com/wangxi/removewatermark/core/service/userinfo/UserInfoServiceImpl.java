@@ -4,6 +4,7 @@
  */
 package com.wangxi.removewatermark.core.service.userinfo;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -13,6 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
@@ -25,6 +27,7 @@ import com.wangxi.removewatermark.common.servicefacade.enums.ErrorCodeEnum;
 import com.wangxi.removewatermark.common.servicefacade.model.BaseResult;
 import com.wangxi.removewatermark.common.utils.AssertUtil;
 import com.wangxi.removewatermark.common.utils.exception.BizException;
+import com.wangxi.removewatermark.core.model.UserBizInfo;
 import com.wangxi.removewatermark.core.model.UserLoginResult;
 import com.wangxi.removewatermark.core.model.WechatConfig;
 import com.wangxi.removewatermark.core.service.resttemplate.RestTemplateService;
@@ -88,13 +91,51 @@ public class UserInfoServiceImpl implements UserInfoService {
 
             @Override
             public void finalLog() {
-                LOGGER.info(String.format("用户登录，入参[code:%s, nickName:%s], 出参[baseResult:%s]",
+                LOGGER.debug(String.format("用户登录，入参[code:%s, nickName:%s], 出参[baseResult:%s]",
                     code, nickName, baseResult));
             }
 
             @Override
             public List<String> extraDigestLogItemList() {
                 return null;
+            }
+        });
+        return baseResult;
+    }
+
+    /**
+     * 查询业务信息
+     *
+     * @param openId 开放id
+     * @return {@link BaseResult}<{@link UserBizInfo}>
+     */
+    @Override
+    public BaseResult<UserBizInfo> queryBizInfo(String openId) {
+        BaseResult<UserBizInfo> baseResult = new BaseResult<>();
+        ServiceTemplate.execute(baseResult, new ServiceCallback() {
+            @Override
+            public void checkParameter() {
+                AssertUtil.assertNotBlank(openId, "开放id不能为空");
+            }
+
+            @Override
+            public void process() {
+                UserBizInfo result = new UserBizInfo();
+                QueryWrapper<UserInfoDO> queryWrapper = new QueryWrapper<>();
+                queryWrapper.lambda().eq(UserInfoDO::getUserId, openId);
+                UserInfoDO userInfoDO = userInfoDAO.selectOne(queryWrapper);
+                BeanUtils.copyProperties(userInfoDO, result);
+                baseResult.setResultData(result);
+            }
+
+            @Override
+            public void finalLog() {
+                LOGGER.debug(String.format("查询业务信息，入参[openId:%s], 出参[baseResult:%s]", openId, baseResult));
+            }
+
+            @Override
+            public List<String> extraDigestLogItemList() {
+                return Collections.singletonList(openId);
             }
         });
         return baseResult;

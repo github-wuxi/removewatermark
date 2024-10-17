@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.wangxi.removewatermark.common.servicefacade.model.BaseResult;
+import com.wangxi.removewatermark.core.model.UserBizInfo;
 import com.wangxi.removewatermark.core.model.UserLoginResult;
 import com.wangxi.removewatermark.core.service.userinfo.UserInfoService;
 
@@ -41,5 +42,17 @@ public class UserController {
     @ResponseBody
     public BaseResult<UserLoginResult> login(String code, String nickName) {
         return userInfoService.login(code, nickName);
+    }
+
+    /**
+     * 查询业务信息
+     *
+     * @param openId 开放id
+     * @return {@link BaseResult}<{@link UserBizInfo}>
+     */
+    @RequestMapping(value = "/queryBizInfo.json", method = { RequestMethod.GET, RequestMethod.POST })
+    @ResponseBody
+    public BaseResult<UserBizInfo> queryBizInfo(String openId) {
+        return userInfoService.queryBizInfo(openId);
     }
 }
