@@ -5,6 +5,7 @@
 package com.wangxi.removewatermark.core.service.userinfo;
 
 import com.wangxi.removewatermark.common.servicefacade.model.BaseResult;
+import com.wangxi.removewatermark.core.model.UserBizInfo;
 import com.wangxi.removewatermark.core.model.UserLoginResult;
 
 /**
@@ -22,4 +23,12 @@ public interface UserInfoService {
      * @return {@link BaseResult}<{@link String}>
      */
     BaseResult<UserLoginResult> login(String code, String nickName);
+
+    /**
+     * 查询业务信息
+     *
+     * @param openId 开放id
+     * @return {@link BaseResult}<{@link UserBizInfo}>
+     */
+    BaseResult<UserBizInfo> queryBizInfo(String openId);
 }
