@@ -79,7 +79,10 @@ public class UserInfoServiceImpl implements UserInfoService {
                 String userId = fetchOpenId(code);
                 // 用户信息记录
                 result.setOpenId(userId);
-                result.setTodayFirstTimeLogin(saveUserInfo(userId, nickName));
+                if (saveUserInfo(userId, nickName)) {
+                    result.setTodayFirstTimeLoginText(String.format("每日首次登录可获取%s次免费解析次数～",
+                        WechatConfig.getUserSignInAddNumber()));
+                }
                 baseResult.setResultData(result);
             }
 
