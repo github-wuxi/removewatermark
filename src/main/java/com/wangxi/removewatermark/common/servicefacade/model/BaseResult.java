@@ -26,9 +26,19 @@ public class BaseResult<T> {
     private boolean success = true;
 
     /**
+     * 是否可重试失败，true代表是
+     */
+    private boolean retryFail;
+
+    /**
      * 错误码
      */
-    private ErrorCodeEnum errorCode;
+    private String errorCode;
+
+    /**
+     * 错误描述信息
+     */
+    private String errorMsg;
 
     /**
      * 结果数据
@@ -43,12 +53,16 @@ public class BaseResult<T> {
     /**
      * 填充失败结果
      *
-     * @param errorCode  错误代码
-     * @param resultData 结果数据
+     * @param resultData    结果数据
+     * @param errorCodeEnum 错误码枚举
      */
-    public static void fillFailureResult(BaseResult resultData, ErrorCodeEnum errorCode) {
+    public static void fillFailureResult(BaseResult resultData, ErrorCodeEnum errorCodeEnum) {
         resultData.setSuccess(false);
-        resultData.setErrorCode(errorCode);
+        if (errorCodeEnum != null) {
+            resultData.setRetryFail(errorCodeEnum.isRetryFail());
+            resultData.setErrorMsg(errorCodeEnum.getResultCode());
+            resultData.setErrorCode(errorCodeEnum.getResultDesc());
+        }
         resultData.setTraceId(MDC.get(LoggerConstants.TRACE_ID));
     }
 
