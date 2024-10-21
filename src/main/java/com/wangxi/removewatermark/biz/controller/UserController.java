@@ -47,12 +47,12 @@ public class UserController {
     /**
      * 查询业务信息
      *
-     * @param openId 开放id
+     * @param userId 用户id
      * @return {@link BaseResult}<{@link UserBizInfo}>
      */
     @RequestMapping(value = "/queryBizInfo.json", method = { RequestMethod.GET, RequestMethod.POST })
     @ResponseBody
-    public BaseResult<UserBizInfo> queryBizInfo(String openId) {
-        return userInfoService.queryBizInfo(openId);
+    public BaseResult<UserBizInfo> queryBizInfo(String userId) {
+        return userInfoService.queryBizInfo(userId);
     }
 }
