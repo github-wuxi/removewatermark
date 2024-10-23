@@ -5,7 +5,6 @@
 package com.wangxi.removewatermark.common.utils.exception;
 
 import com.wangxi.removewatermark.common.servicefacade.enums.ErrorCodeEnum;
-import com.wangxi.removewatermark.common.utils.constants.CharsetConstants;
 
 import lombok.Getter;
 
@@ -60,12 +59,10 @@ public class BizException extends RuntimeException {
         if (errorCode == null) {
             return null;
         }
-        String errorCodeStr = CharsetConstants.LEFT_SQUARE_BRACKET + errorCode.getResultCode()
-            + CharsetConstants.RIGHT_SQUARE_BRACKET;
         if (arguments == null || arguments.length == 0) {
-            return errorCodeStr + errorCode.getResultDesc();
+            return errorCode.getResultDesc();
         } else {
-            return errorCodeStr + String.format(errorCode.getResultDesc(), arguments);
+            return String.format(errorCode.getResultDesc(), arguments);
         }
     }
 }
