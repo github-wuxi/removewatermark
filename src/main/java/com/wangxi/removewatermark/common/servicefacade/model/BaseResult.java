@@ -67,6 +67,23 @@ public class BaseResult<T> {
     }
 
     /**
+     * 填充失败结果
+     *
+     * @param resultData    结果数据
+     * @param errorCodeEnum 错误码枚举
+     * @param errorMsg      错误信息
+     */
+    public static void fillFailureResult(BaseResult resultData, ErrorCodeEnum errorCodeEnum, String errorMsg) {
+        resultData.setSuccess(false);
+        resultData.setErrorMsg(errorMsg);
+        if (errorCodeEnum != null) {
+            resultData.setRetryFail(errorCodeEnum.isRetryFail());
+            resultData.setErrorCode(errorCodeEnum.getResultCode());
+        }
+        resultData.setTraceId(MDC.get(LoggerConstants.TRACE_ID));
+    }
+
+    /**
      * 构造方法
      */
     public BaseResult() {

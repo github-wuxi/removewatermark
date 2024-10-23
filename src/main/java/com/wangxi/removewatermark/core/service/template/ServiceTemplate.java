@@ -61,7 +61,7 @@ public class ServiceTemplate {
             result.setSuccess(true);
         } catch (BizException e) {
             LOGGER.warn(String.format("BizException, (method=%s, errorCode=%s, message=%s)", declareMethod, e.getResultCode(), e.getMessage()), e);
-            BaseResult.fillFailureResult(result, ErrorCodeEnum.getByCode(e.getResultCode()));
+            BaseResult.fillFailureResult(result, ErrorCodeEnum.getByCode(e.getResultCode()), e.getMessage());
         } catch (Throwable e) {
             LOGGER.error(String.format("Throwable, (method=%s, message=%s)", declareMethod, e.getMessage()), e);
             BaseResult.fillFailureResult(result, ErrorCodeEnum.UNKNOWN_EXCEPTION);

@@ -4,7 +4,6 @@
  */
 package com.wangxi.removewatermark.core.service.video.parser;
 
-import java.net.URLDecoder;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -79,7 +78,7 @@ public class DouYinParser extends AbstractParser {
                 continue;
             }
             // 解码
-            String decodeContent = URLDecoder.decode(element.data().substring(index + DATA_KEY.length()));
+            String decodeContent = element.data().substring(index + DATA_KEY.length());
             // 4、提取出对象
             DocumentContext context = JsonPath.parse(decodeContent);
             VideoDTO videoDTO = new VideoDTO();
