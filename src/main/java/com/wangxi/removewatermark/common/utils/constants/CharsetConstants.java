@@ -18,16 +18,6 @@ public class CharsetConstants {
     public static final String DOT = ".";
 
     /**
-     * 左方括号
-     */
-    public static final String LEFT_SQUARE_BRACKET = "[";
-
-    /**
-     * 右方括号
-     */
-    public static final String RIGHT_SQUARE_BRACKET = "]";
-
-    /**
      * 逗号
      */
     public static final String COMMA = ",";
