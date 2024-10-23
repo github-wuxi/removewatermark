@@ -33,6 +33,16 @@ import com.wangxi.removewatermark.common.utils.exception.BizException;
 @Service
 public class DouYinParser extends AbstractParser {
     /**
+     * 数据key
+     */
+    private static final String DATA_KEY = "window._ROUTER_DATA = ";
+
+    /**
+     * 数据路径
+     */
+    private static final String DATA_PATH = "$.loaderData.['video_(id)/page'].videoInfoRes.item_list[0].";
+
+    /**
      * 解析视频
      *
      * @param originalUrl 原始地址
@@ -58,22 +68,30 @@ public class DouYinParser extends AbstractParser {
             throw new BizException(ErrorCodeEnum.WEB_API_CALL_FAIL);
         }
 
-        // 3、解析出html标签，找到RENDER_DATA元素
+        // 3、解析出html标签，找到DATA_KEY对应的元素
         Document document = Jsoup.parse(content);
-        Element element = document.getElementById("RENDER_DATA");
-        // 解码
-        String decodeContent = URLDecoder.decode(element.data());
-
-        // 4、提取出对象
-        DocumentContext context = JsonPath.parse(decodeContent);
-        VideoDTO videoDTO = new VideoDTO();
-        videoDTO.setVideoId(videoId);
-        videoDTO.setVideoSource(VideoSourceEnum.DOU_YIN.getCode());
-        videoDTO.setVideoOriginalUrl(originalUrl);
-        videoDTO.setVideoTitle(context.read("$.app.videoInfoRes.item_list[0].desc"));
-        videoDTO.setVideoCover(context.read("$.app.videoInfoRes.item_list[0].video.cover.url_list[0]"));
-        videoDTO.setVideoParsedUrl(((String) context.read("$.app.videoInfoRes.item_list[0].video.play_addr.url_list[0]"))
-            .replace("playwm", "play"));
-        return videoDTO;
+        for (Element element : document.getAllElements()) {
+            if (element == null) {
+                continue;
+            }
+            int index = element.data().indexOf(DATA_KEY);
+            if (index < 0) {
+                continue;
+            }
+            // 解码
+            String decodeContent = URLDecoder.decode(element.data().substring(index + DATA_KEY.length()));
+            // 4、提取出对象
+            DocumentContext context = JsonPath.parse(decodeContent);
+            VideoDTO videoDTO = new VideoDTO();
+            videoDTO.setVideoId(videoId);
+            videoDTO.setVideoSource(VideoSourceEnum.DOU_YIN.getCode());
+            videoDTO.setVideoOriginalUrl(originalUrl);
+            videoDTO.setVideoTitle(context.read(DATA_PATH + "desc"));
+            videoDTO.setVideoCover(context.read(DATA_PATH + "video.cover.url_list[0]"));
+            videoDTO.setVideoParsedUrl(((String) context.read(DATA_PATH + "video.play_addr.url_list[0]"))
+                .replace("playwm", "play"));
+            return videoDTO;
+        }
+        return null;
     }
 }

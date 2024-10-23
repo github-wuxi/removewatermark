@@ -60,8 +60,8 @@ public class BaseResult<T> {
         resultData.setSuccess(false);
         if (errorCodeEnum != null) {
             resultData.setRetryFail(errorCodeEnum.isRetryFail());
-            resultData.setErrorMsg(errorCodeEnum.getResultCode());
-            resultData.setErrorCode(errorCodeEnum.getResultDesc());
+            resultData.setErrorCode(errorCodeEnum.getResultCode());
+            resultData.setErrorMsg(errorCodeEnum.getResultDesc());
         }
         resultData.setTraceId(MDC.get(LoggerConstants.TRACE_ID));
     }
