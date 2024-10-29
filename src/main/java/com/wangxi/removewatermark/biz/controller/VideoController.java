@@ -6,6 +6,8 @@ package com.wangxi.removewatermark.biz.controller;
 
 import javax.annotation.Resource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -28,6 +30,8 @@ import com.wangxi.removewatermark.core.service.video.VideoService;
 @RestController
 @RequestMapping("removewatermark/video")
 public class VideoController {
+    private static final Logger LOGGER = LoggerFactory.getLogger(VideoController.class);
+
     /**
      * 视频服务
      */
@@ -56,6 +60,7 @@ public class VideoController {
     @RequestMapping(value = "/queryRecords.json", method = { RequestMethod.GET, RequestMethod.POST })
     @ResponseBody
     public BaseResult<QueryRecordsResult> queryRecords(String request) {
+        LOGGER.debug(request);
         return videoService.queryRecords(JSONObject.parseObject(request, new TypeReference<QueryRecordsRequest>(){}));
     }
 }
