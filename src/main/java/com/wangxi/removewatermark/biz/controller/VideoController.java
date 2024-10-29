@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.TypeReference;
 import com.wangxi.removewatermark.common.servicefacade.model.BaseResult;
 import com.wangxi.removewatermark.common.servicefacade.model.QueryRecordsRequest;
 import com.wangxi.removewatermark.common.servicefacade.model.QueryRecordsResult;
@@ -53,7 +55,7 @@ public class VideoController {
      */
     @RequestMapping(value = "/queryRecords.json", method = { RequestMethod.GET, RequestMethod.POST })
     @ResponseBody
-    public BaseResult<QueryRecordsResult> queryRecords(QueryRecordsRequest request) {
-        return videoService.queryRecords(request);
+    public BaseResult<QueryRecordsResult> queryRecords(String request) {
+        return videoService.queryRecords(JSONObject.parseObject(request, new TypeReference<QueryRecordsRequest>(){}));
     }
 }
