@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.wangxi.removewatermark.common.servicefacade.model.BaseResult;
-import com.wangxi.removewatermark.core.model.UserBizInfo;
-import com.wangxi.removewatermark.core.model.UserLoginResult;
+import com.wangxi.removewatermark.common.servicefacade.model.UserBizInfo;
+import com.wangxi.removewatermark.common.servicefacade.model.UserLoginResult;
 import com.wangxi.removewatermark.core.service.userinfo.UserInfoService;
 
 /**
@@ -23,7 +23,7 @@ import com.wangxi.removewatermark.core.service.userinfo.UserInfoService;
  * @version $Id: UserController.java, v 0.1 2024-05-20 16:16 wuxi Exp $$
  */
 @RestController
-@RequestMapping("user")
+@RequestMapping("removewatermark/user")
 public class UserController {
     /**
      * 用户服务
