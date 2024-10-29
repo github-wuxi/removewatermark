@@ -18,8 +18,11 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wangxi.removewatermark.common.dal.daointerface.ParseVideoRecordDAO;
 import com.wangxi.removewatermark.common.dal.daointerface.UserInfoDAO;
 import com.wangxi.removewatermark.common.dal.dataobject.ParseVideoRecordDO;
@@ -27,6 +30,8 @@ import com.wangxi.removewatermark.common.dal.dataobject.UserInfoDO;
 import com.wangxi.removewatermark.common.servicefacade.enums.ErrorCodeEnum;
 import com.wangxi.removewatermark.common.servicefacade.enums.VideoSourceEnum;
 import com.wangxi.removewatermark.common.servicefacade.model.BaseResult;
+import com.wangxi.removewatermark.common.servicefacade.model.QueryRecordsRequest;
+import com.wangxi.removewatermark.common.servicefacade.model.QueryRecordsResult;
 import com.wangxi.removewatermark.common.servicefacade.model.VideoDTO;
 import com.wangxi.removewatermark.common.utils.AssertUtil;
 import com.wangxi.removewatermark.core.service.video.parser.Parser;
@@ -96,6 +101,65 @@ public class VideoServiceImpl implements VideoService {
                 List<String> itemList = new ArrayList<>();
                 itemList.add(url);
                 itemList.add(userId);
+                return itemList;
+            }
+        });
+        return baseResult;
+    }
+
+    /**
+     * 查询记录
+     *
+     * @param request 请求
+     * @return {@link BaseResult}<{@link QueryRecordsResult}>
+     */
+    @Override
+    public BaseResult<QueryRecordsResult> queryRecords(QueryRecordsRequest request) {
+        BaseResult<QueryRecordsResult> baseResult = new BaseResult<>();
+        ServiceTemplate.execute(baseResult, new ServiceCallback() {
+            @Override
+            public void checkParameter() {
+                AssertUtil.assertNotNull(request, "查询记录请求不能为null");
+                AssertUtil.assertNotBlank(request.getUserId(), "userId不能为空");
+                AssertUtil.assertMin(request.getPageNum(), 1, "页码不能小于1");
+                AssertUtil.assertMin(request.getPageSize(), 1, "页大小不能小于1");
+                AssertUtil.assertMax(request.getPageSize(), 100, "页大小不能大于100");
+            }
+
+            @Override
+            public void process() {
+                QueryWrapper<ParseVideoRecordDO> queryWrapper = new QueryWrapper<>();
+                queryWrapper.eq("userId", request.getUserId());
+                int total = parseVideoRecordDAO.selectCount(queryWrapper);
+                IPage<ParseVideoRecordDO> sqlPage = parseVideoRecordDAO.selectPage(
+                    new Page<>(request.getPageNum(), request.getPageSize()), queryWrapper.orderByDesc("id"));
+                QueryRecordsResult result = new QueryRecordsResult();
+                List<VideoDTO> videoList = new ArrayList<>();
+                if (total == 0 || sqlPage == null || CollectionUtils.isEmpty(sqlPage.getRecords())) {
+                    result.setHasNext(false);
+                } else {
+                    result.setHasNext(total > request.getPageNum() * request.getPageSize());
+                    for (ParseVideoRecordDO recordDO : sqlPage.getRecords()) {
+                        VideoDTO videoDTO = new VideoDTO();
+                        BeanUtils.copyProperties(recordDO, videoDTO);
+                        videoList.add(videoDTO);
+                    }
+                }
+                result.setVideoList(videoList);
+                baseResult.setResultData(result);
+            }
+
+            @Override
+            public void finalLog() {
+
+            }
+
+            @Override
+            public List<String> extraDigestLogItemList() {
+                List<String> itemList = new ArrayList<>();
+                if (request != null) {
+                    itemList.add(request.getUserId());
+                }
                 return itemList;
             }
         });

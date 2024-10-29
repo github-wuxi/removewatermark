@@ -5,6 +5,8 @@
 package com.wangxi.removewatermark.core.service.video;
 
 import com.wangxi.removewatermark.common.servicefacade.model.BaseResult;
+import com.wangxi.removewatermark.common.servicefacade.model.QueryRecordsRequest;
+import com.wangxi.removewatermark.common.servicefacade.model.QueryRecordsResult;
 
 /**
  * 视频服务
@@ -22,4 +24,12 @@ public interface VideoService {
      * @return {@link BaseResult}<{@link Boolean}>
      */
     BaseResult parseVideo(String url, String userId);
+
+    /**
+     * 查询记录
+     *
+     * @param request 请求
+     * @return {@link BaseResult}<{@link QueryRecordsResult}>
+     */
+    BaseResult<QueryRecordsResult> queryRecords(QueryRecordsRequest request);
 }

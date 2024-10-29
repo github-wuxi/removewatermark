@@ -5,8 +5,8 @@
 package com.wangxi.removewatermark.core.service.userinfo;
 
 import com.wangxi.removewatermark.common.servicefacade.model.BaseResult;
-import com.wangxi.removewatermark.core.model.UserBizInfo;
-import com.wangxi.removewatermark.core.model.UserLoginResult;
+import com.wangxi.removewatermark.common.servicefacade.model.UserBizInfo;
+import com.wangxi.removewatermark.common.servicefacade.model.UserLoginResult;
 
 /**
  * 用户服务

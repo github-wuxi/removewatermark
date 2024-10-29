@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.wangxi.removewatermark.common.servicefacade.model.BaseResult;
+import com.wangxi.removewatermark.common.servicefacade.model.QueryRecordsRequest;
+import com.wangxi.removewatermark.common.servicefacade.model.QueryRecordsResult;
 import com.wangxi.removewatermark.core.service.video.VideoService;
 
 /**
@@ -22,7 +24,7 @@ import com.wangxi.removewatermark.core.service.video.VideoService;
  * @date 2024/05/21
  */
 @RestController
-@RequestMapping("video")
+@RequestMapping("removewatermark/video")
 public class VideoController {
     /**
      * 视频服务
@@ -41,5 +43,17 @@ public class VideoController {
     @ResponseBody
     public BaseResult parseVideo(String url, String userId) {
         return videoService.parseVideo(url, userId);
+    }
+
+    /**
+     * 查询解析记录
+     *
+     * @param request 请求
+     * @return {@link BaseResult}
+     */
+    @RequestMapping(value = "/queryRecords.json", method = { RequestMethod.GET, RequestMethod.POST })
+    @ResponseBody
+    public BaseResult<QueryRecordsResult> queryRecords(QueryRecordsRequest request) {
+        return videoService.queryRecords(request);
     }
 }

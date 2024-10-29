@@ -2,7 +2,7 @@
  * Alipay.com Inc.
  * Copyright (c) 2004-2024 All Rights Reserved.
  */
-package com.wangxi.removewatermark.core.model;
+package com.wangxi.removewatermark.common.servicefacade.model;
 
 import lombok.Data;
 
