@@ -17,15 +17,15 @@ public class QueryRecordsRequest {
     /**
      * 页码，从1开始
      */
-    int pageNum;
+    private int pageNum;
 
     /**
      * 页大小
      */
-    int pageSize = 10;
+    private int pageSize = 10;
 
     /**
      * 用户id
      */
-    String userId;
+    private String userId;
 }

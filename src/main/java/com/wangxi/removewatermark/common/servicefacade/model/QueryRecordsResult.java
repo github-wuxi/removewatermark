@@ -19,10 +19,10 @@ public class QueryRecordsResult {
     /**
      * 视频列表
      */
-    List<VideoDTO> videoList;
+    private List<VideoDTO> videoList;
 
     /**
      * 是否有下一页，true代表是
      */
-    boolean hasNext;
+    private boolean hasNext;
 }

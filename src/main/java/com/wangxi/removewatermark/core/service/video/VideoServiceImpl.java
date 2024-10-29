@@ -93,7 +93,7 @@ public class VideoServiceImpl implements VideoService {
 
             @Override
             public void finalLog() {
-
+                LOGGER.debug(String.format("解析视频，入参[url:%s, userId:%s], 出参[baseResult:%s]", url, userId, baseResult));
             }
 
             @Override
@@ -151,7 +151,7 @@ public class VideoServiceImpl implements VideoService {
 
             @Override
             public void finalLog() {
-
+                LOGGER.debug(String.format("查询记录，入参[request:%s], 出参[baseResult:%s]", request, baseResult));
             }
 
             @Override
