@@ -129,7 +129,7 @@ public class VideoServiceImpl implements VideoService {
             @Override
             public void process() {
                 QueryWrapper<ParseVideoRecordDO> queryWrapper = new QueryWrapper<>();
-                queryWrapper.eq("userId", request.getUserId());
+                queryWrapper.eq("user_id", request.getUserId());
                 int total = parseVideoRecordDAO.selectCount(queryWrapper);
                 IPage<ParseVideoRecordDO> sqlPage = parseVideoRecordDAO.selectPage(
                     new Page<>(request.getPageNum(), request.getPageSize()), queryWrapper.orderByDesc("id"));
