@@ -132,7 +132,7 @@ public class VideoServiceImpl implements VideoService {
                 queryWrapper.eq("user_id", request.getUserId());
                 int total = parseVideoRecordDAO.selectCount(queryWrapper);
                 IPage<ParseVideoRecordDO> sqlPage = parseVideoRecordDAO.selectPage(
-                    new Page<>(request.getPageNum(), request.getPageSize()), queryWrapper.orderByDesc("id"));
+                    new Page<>(request.getPageNum(), request.getPageSize()), queryWrapper.orderByDesc("gmt_create"));
                 QueryRecordsResult result = new QueryRecordsResult();
                 List<VideoDTO> videoList = new ArrayList<>();
                 if (total == 0 || sqlPage == null || CollectionUtils.isEmpty(sqlPage.getRecords())) {
