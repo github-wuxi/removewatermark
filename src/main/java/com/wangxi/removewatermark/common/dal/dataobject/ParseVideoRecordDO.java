@@ -41,12 +41,6 @@ public class ParseVideoRecordDO {
     private String userId;
 
     /**
-     * 是否需要展示
-     * 默认展示
-     */
-    private boolean whetherDisplay = true;
-
-    /**
      * 视频id
      */
     private String videoId;
