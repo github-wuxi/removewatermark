@@ -139,9 +139,11 @@ public class VideoServiceImpl implements VideoService {
                     result.setHasNext(false);
                 } else {
                     result.setHasNext(total > request.getPageNum() * request.getPageSize());
+                    int index = (request.getPageNum() - 1) * request.getPageSize();
                     for (ParseVideoRecordDO recordDO : sqlPage.getRecords()) {
                         VideoDTO videoDTO = new VideoDTO();
                         BeanUtils.copyProperties(recordDO, videoDTO);
+                        videoDTO.setVideoTitle(String.format("%s、%s", ++index, videoDTO.getVideoTitle()));
                         videoList.add(videoDTO);
                     }
                 }
