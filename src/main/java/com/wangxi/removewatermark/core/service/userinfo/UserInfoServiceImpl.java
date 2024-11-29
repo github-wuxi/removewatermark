@@ -62,17 +62,19 @@ public class UserInfoServiceImpl implements UserInfoService {
     /**
      * 登录
      *
-     * @param code     临时登录凭证 code
-     * @param nickName 昵称
-     * @return {@link BaseResult}<{@link String}>
+     * @param code      临时登录凭证 code
+     * @param nickName  昵称
+     * @param avatarUrl 头像
+     * @return {@link BaseResult}<{@link UserLoginResult}>
      */
     @Override
-    public BaseResult<UserLoginResult> login(String code, String nickName) {
+    public BaseResult<UserLoginResult> login(String code, String nickName, String avatarUrl) {
         BaseResult<UserLoginResult> baseResult = new BaseResult<>();
         ServiceTemplate.execute(baseResult, new ServiceCallback() {
             @Override
             public void checkParameter() {
                 AssertUtil.assertNotBlank(code, "临时登录凭证不能为空");
+                AssertUtil.assertNotBlank(nickName, "用户昵称不能为空");
             }
 
             @Override
@@ -82,7 +84,7 @@ public class UserInfoServiceImpl implements UserInfoService {
                 String userId = fetchOpenId(code);
                 // 用户信息记录
                 result.setOpenId(userId);
-                if (saveUserInfo(userId, nickName)) {
+                if (saveUserInfo(userId, nickName, avatarUrl)) {
                     result.setTodayFirstTimeLoginText(String.format("每日首次登录可获取%s次免费解析次数～",
                         WechatConfig.getUserSignInAddNumber()));
                 }
@@ -167,11 +169,12 @@ public class UserInfoServiceImpl implements UserInfoService {
     /**
      * 保存用户信息，并且返回是否今日首次登录
      *
-     * @param userId   用户id
-     * @param userName 用户名
+     * @param userId    用户id
+     * @param userName  用户名
+     * @param avatarUrl 头像
      * @return boolean
      */
-    private boolean saveUserInfo(String userId, String userName) {
+    private boolean saveUserInfo(String userId, String userName, String avatarUrl) {
         QueryWrapper<UserInfoDO> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda().eq(UserInfoDO::getUserId, userId);
         UserInfoDO userInfoDO = userInfoDAO.selectOne(queryWrapper);
@@ -181,7 +184,7 @@ public class UserInfoServiceImpl implements UserInfoService {
             userInfoDO = new UserInfoDO();
             userInfoDO.setUserId(userId);
             userInfoDO.setUserName(userName);
-            userInfoDO.setWhetherVip(false);
+            userInfoDO.setUserAvatar(avatarUrl);
             userInfoDO.setLatestSignInTime(now);
             userInfoDO.setTotalSignInNumber(1L);
             userInfoDO.setAvailableNumber(WechatConfig.getUserSignInAddNumber());
@@ -194,6 +197,7 @@ public class UserInfoServiceImpl implements UserInfoService {
             return true;
         }
         userInfoDO.setUserName(userName);
+        userInfoDO.setUserAvatar(avatarUrl);
         userInfoDO.setGmtModified(now);
         // 最新签到时间为今天代表不是今天第一次
         if (DateUtils.isSameDay(now, userInfoDO.getLatestSignInTime())) {

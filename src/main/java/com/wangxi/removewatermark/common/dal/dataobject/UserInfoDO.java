@@ -46,9 +46,9 @@ public class UserInfoDO {
     private String userName;
 
     /**
-     * 是否为vip
+     * 用户头像
      */
-    private boolean whetherVip;
+    private String userAvatar;
 
     /**
      * 最新签到时间

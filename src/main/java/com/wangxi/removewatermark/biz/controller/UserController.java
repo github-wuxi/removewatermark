@@ -34,14 +34,15 @@ public class UserController {
     /**
      * 登录
      *
-     * @param code     临时登录凭证 code
-     * @param nickName 昵称
+     * @param code      临时登录凭证 code
+     * @param nickName  昵称
+     * @param avatarUrl 头像url
      * @return {@link BaseResult}<{@link UserLoginResult}>
      */
     @RequestMapping(value = "/login.json", method = { RequestMethod.GET, RequestMethod.POST })
     @ResponseBody
-    public BaseResult<UserLoginResult> login(String code, String nickName) {
-        return userInfoService.login(code, nickName);
+    public BaseResult<UserLoginResult> login(String code, String nickName, String avatarUrl) {
+        return userInfoService.login(code, nickName, avatarUrl);
     }
 
     /**

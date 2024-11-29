@@ -18,11 +18,12 @@ public interface UserInfoService {
     /**
      * 登录
      *
-     * @param code     临时登录凭证 code
-     * @param nickName 昵称
-     * @return {@link BaseResult}<{@link String}>
+     * @param code      临时登录凭证 code
+     * @param nickName  昵称
+     * @param avatarUrl 头像
+     * @return {@link BaseResult}<{@link UserLoginResult}>
      */
-    BaseResult<UserLoginResult> login(String code, String nickName);
+    BaseResult<UserLoginResult> login(String code, String nickName, String avatarUrl);
 
     /**
      * 查询业务信息
