@@ -15,11 +15,6 @@ import lombok.Data;
 @Data
 public class UserBizInfo {
     /**
-     * 是否为vip
-     */
-    private boolean whetherVip;
-
-    /**
      * 剩余可用次数
      */
     private long availableNumber;
