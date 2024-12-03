@@ -49,12 +49,8 @@ public class KuaiShouParser extends AbstractParser {
      */
     @Override
     public VideoDTO parseVideo(String originalUrl) {
-        // 1、去除掉无用视频后缀描述
-        Matcher matcher = Pattern.compile("(https?://v.kuaishou.com/[\\S]*)").matcher(originalUrl);
-        if (!matcher.find()) {
-            throw new BizException(ErrorCodeEnum.ILLEGAL_VIDEO_URL);
-        }
-        String url = matcher.group(1);
+        // 1、去除掉无用视频前后缀
+        String url = fetchTargetUrl(originalUrl, "(https?://v.kuaishou.com/[\\S]*)");
 
         // 2、获取重定向后的地址，来获取视频id
         HttpHeaders headForResponse = restTemplateService.headForHeaders(url);

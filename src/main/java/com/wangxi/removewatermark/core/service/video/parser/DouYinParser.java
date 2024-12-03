@@ -48,8 +48,11 @@ public class DouYinParser extends AbstractParser {
      */
     @Override
     public VideoDTO parseVideo(String originalUrl) {
-        // 1、获取重定向后的地址，来获取视频id
-        String url = restTemplateService.headForHeaders(originalUrl).getLocation().toString();
+        // 1、去除掉无用视频前后缀
+        String url = fetchTargetUrl(originalUrl, "(https?://v.douyin.com/[\\S]*)");
+
+        // 2、获取重定向后的地址，来获取视频id
+        url = restTemplateService.headForHeaders(url).getLocation().toString();
         Matcher matcher = Pattern.compile("/share/video/([\\d]*)[/|?]").matcher(url);
         if (!matcher.find()) {
             throw new BizException(ErrorCodeEnum.ILLEGAL_VIDEO_URL);
@@ -59,7 +62,7 @@ public class DouYinParser extends AbstractParser {
             throw new BizException(ErrorCodeEnum.ILLEGAL_VIDEO_URL);
         }
 
-        // 2、http调用api获取结果
+        // 3、http调用api获取结果
         String dyWebApi = "https://www.iesdouyin.com/share/video/" + videoId;
         HttpHeaders httpHeaders = fetchHttpHeaders(dyWebApi, null);
         String content = restTemplateService.fetchHttpEntity(dyWebApi, httpHeaders, HttpMethod.GET, null, String.class);
@@ -67,7 +70,7 @@ public class DouYinParser extends AbstractParser {
             throw new BizException(ErrorCodeEnum.WEB_API_CALL_FAIL);
         }
 
-        // 3、解析出html标签，找到DATA_KEY对应的元素
+        // 4、解析出html标签，找到DATA_KEY对应的元素
         Document document = Jsoup.parse(content);
         for (Element element : document.getAllElements()) {
             if (element == null) {
@@ -79,7 +82,7 @@ public class DouYinParser extends AbstractParser {
             }
             // 解码
             String decodeContent = element.data().substring(index + DATA_KEY.length());
-            // 4、提取出对象
+            // 5、提取出对象
             DocumentContext context = JsonPath.parse(decodeContent);
             VideoDTO videoDTO = new VideoDTO();
             videoDTO.setVideoId(videoId);

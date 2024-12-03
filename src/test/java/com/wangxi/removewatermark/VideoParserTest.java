@@ -31,7 +31,7 @@ class VideoParserTest {
 
     @Test
     void testDouYinParseVideo() {
-        VideoDTO videoDTO = douYinParser.parseVideo("https://v.douyin.com/i2yCCBtb/");
+        VideoDTO videoDTO = douYinParser.parseVideo("2.89 复制打开抖音，看看【舌尖的作品】羊肉的奶香味与韭花酱的咸香碰撞融合，这一口内蒙古手... https://v.douyin.com/CeiJLLMMS/ sRK:/ 05/27 H@V.yt");
         System.out.println(videoDTO);
         AssertUtil.assertNotNull(videoDTO, "解析错误！");
     }

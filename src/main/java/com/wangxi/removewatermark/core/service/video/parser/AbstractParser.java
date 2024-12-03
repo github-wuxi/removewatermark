@@ -5,6 +5,8 @@
 package com.wangxi.removewatermark.core.service.video.parser;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.annotation.Resource;
 
@@ -12,7 +14,10 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.util.CollectionUtils;
 
 import org.apache.commons.lang3.StringUtils;
+
+import com.wangxi.removewatermark.common.servicefacade.enums.ErrorCodeEnum;
 import com.wangxi.removewatermark.common.utils.constants.CharsetConstants;
+import com.wangxi.removewatermark.common.utils.exception.BizException;
 import com.wangxi.removewatermark.core.service.resttemplate.RestTemplateService;
 
 /**
@@ -28,6 +33,21 @@ public abstract class AbstractParser implements Parser {
      */
     @Resource
     protected RestTemplateService restTemplateService;
+
+    /**
+     * 获取目标url，去除掉视频链接无用的前后缀
+     *
+     * @param originalUrl 原始url
+     * @param regex       正则表达式
+     * @return {@link String}
+     */
+    protected String fetchTargetUrl(String originalUrl, String regex) {
+        Matcher urlMatcher = Pattern.compile(regex).matcher(originalUrl);
+        if (!urlMatcher.find()) {
+            throw new BizException(ErrorCodeEnum.ILLEGAL_VIDEO_URL);
+        }
+        return urlMatcher.group(1);
+    }
 
     /**
      * 将set cookie转换为cookie
