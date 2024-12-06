@@ -12,6 +12,10 @@ spring:
 
 server:
   port: 10521
+  ssl:
+    key-store-password: qoxsqz4y
+    key-store-type: JKS
+    key-store: classpath:ruirui.fun.jks
 
 project:
   wechat:
