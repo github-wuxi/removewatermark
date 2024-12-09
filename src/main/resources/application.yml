@@ -20,7 +20,7 @@ server:
 project:
   wechat:
     app-id: wxdbfd5d962e94f4a4
-    secret: 07a23136a66186025b779ac9e370fe53
+    secret: 6c52ea7bb2394f42ebd0368b0a6423cc
     user-sign-in-add-number: 3
 
   logging:
