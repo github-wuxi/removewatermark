@@ -24,4 +24,4 @@ project:
     user-sign-in-add-number: 3
 
   logging:
-    level: DEBUG
+    level: INFO
