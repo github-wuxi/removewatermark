@@ -11,7 +11,7 @@ spring:
     add-mappings: false
 
 server:
-  port: 443
+  port: 10521
   ssl:
     key-store-password: qoxsqz4y
     key-store-type: JKS
