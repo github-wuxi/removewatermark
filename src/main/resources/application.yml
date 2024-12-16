@@ -11,11 +11,13 @@ spring:
     add-mappings: false
 
 server:
-  port: 10521
+#  port: 10521
   ssl:
+    enabled: true
     key-store-password: qoxsqz4y
     key-store-type: JKS
     key-store: classpath:ruirui.fun.jks
+    client-auth: none
 
 project:
   wechat:
