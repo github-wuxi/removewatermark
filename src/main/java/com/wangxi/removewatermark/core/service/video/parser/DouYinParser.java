@@ -90,10 +90,8 @@ public class DouYinParser extends AbstractParser {
             videoDTO.setVideoOriginalUrl(originalUrl);
             videoDTO.setVideoTitle(context.read(DATA_PATH + "desc"));
             videoDTO.setVideoCover(context.read(DATA_PATH + "video.cover.url_list[0]"));
-            // 6、抖音这里aweme.snssdk.com的视频地址无法小程序直接下载，需要获取重定向后的地址
-            String needLocationUrl = ((String) context.read(DATA_PATH + "video.play_addr.url_list[0]"))
-                .replace("playwm", "play");
-            videoDTO.setVideoParsedUrl(restTemplateService.headForHeaders(needLocationUrl).getLocation().toString());
+            videoDTO.setVideoParsedUrl(((String) context.read(DATA_PATH + "video.play_addr.url_list[0]"))
+                .replace("playwm", "play"));
             return videoDTO;
         }
         return null;
