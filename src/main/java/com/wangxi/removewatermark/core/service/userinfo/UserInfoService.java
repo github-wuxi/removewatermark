@@ -4,8 +4,8 @@
  */
 package com.wangxi.removewatermark.core.service.userinfo;
 
+import com.wangxi.removewatermark.common.dal.dataobject.UserInfoDO;
 import com.wangxi.removewatermark.common.servicefacade.model.BaseResult;
-import com.wangxi.removewatermark.common.servicefacade.model.UserBizInfo;
 import com.wangxi.removewatermark.common.servicefacade.model.UserLoginResult;
 
 /**
@@ -19,17 +19,25 @@ public interface UserInfoService {
      * 登录
      *
      * @param code      临时登录凭证 code
-     * @param nickName  昵称
-     * @param avatarUrl 头像
      * @return {@link BaseResult}<{@link UserLoginResult}>
      */
-    BaseResult<UserLoginResult> login(String code, String nickName, String avatarUrl);
+    BaseResult<UserLoginResult> login(String code);
 
     /**
-     * 查询业务信息
+     * 查询用户信息
      *
-     * @param openId 开放id
-     * @return {@link BaseResult}<{@link UserBizInfo}>
+     * @param userId 用户id
+     * @return {@link BaseResult}<{@link UserInfoDO}>
      */
-    BaseResult<UserBizInfo> queryBizInfo(String openId);
+    BaseResult<UserInfoDO> queryUserInfo(String userId);
+
+    /**
+     * 更新用户信息
+     *
+     * @param userId     用户id
+     * @param userAvatar 用户头像
+     * @param userName   用户名
+     * @return {@link BaseResult}
+     */
+    BaseResult updateUserInfo(String userId, String userAvatar, String userName);
 }
