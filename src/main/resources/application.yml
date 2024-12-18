@@ -11,10 +11,10 @@ spring:
     add-mappings: false
 
 server:
-  port: 10521
+  port: 19708
   ssl:
     enabled: true
-    key-store-password: t0b00oqk
+    key-store-password: 9jmopfh6
     key-store-type: JKS
     key-store: classpath:ruirui.fun.jks
     client-auth: none
