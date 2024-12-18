@@ -16,7 +16,7 @@ server:
     enabled: true
     key-store-password: 9jmopfh6
     key-store-type: JKS
-    key-store: classpath:ruirui.fun.jks
+    key-store: classpath:www.ruirui.fun.jks
     client-auth: none
 
 project:
