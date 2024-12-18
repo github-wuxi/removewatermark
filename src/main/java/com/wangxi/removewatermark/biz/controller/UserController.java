@@ -8,11 +8,12 @@ import javax.annotation.Resource;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.wangxi.removewatermark.common.dal.dataobject.UserInfoDO;
 import com.wangxi.removewatermark.common.servicefacade.model.BaseResult;
-import com.wangxi.removewatermark.common.servicefacade.model.UserBizInfo;
 import com.wangxi.removewatermark.common.servicefacade.model.UserLoginResult;
 import com.wangxi.removewatermark.core.service.userinfo.UserInfoService;
 
@@ -35,25 +36,37 @@ public class UserController {
      * 登录
      *
      * @param code      临时登录凭证 code
-     * @param nickName  昵称
-     * @param avatarUrl 头像url
      * @return {@link BaseResult}<{@link UserLoginResult}>
      */
     @RequestMapping(value = "/login.json", method = { RequestMethod.GET, RequestMethod.POST })
     @ResponseBody
-    public BaseResult<UserLoginResult> login(String code, String nickName, String avatarUrl) {
-        return userInfoService.login(code, nickName, avatarUrl);
+    public BaseResult<UserLoginResult> login(String code) {
+        return userInfoService.login(code);
     }
 
     /**
-     * 查询业务信息
+     * 查询用户信息
      *
      * @param userId 用户id
-     * @return {@link BaseResult}<{@link UserBizInfo}>
+     * @return {@link BaseResult}<{@link UserInfoDO}>
      */
-    @RequestMapping(value = "/queryBizInfo.json", method = { RequestMethod.GET, RequestMethod.POST })
+    @RequestMapping(value = "/queryUserInfo.json", method = { RequestMethod.GET, RequestMethod.POST })
     @ResponseBody
-    public BaseResult<UserBizInfo> queryBizInfo(String userId) {
-        return userInfoService.queryBizInfo(userId);
+    public BaseResult<UserInfoDO> queryUserInfo(String userId) {
+        return userInfoService.queryUserInfo(userId);
+    }
+
+    /**
+     * 更新用户信息
+     *
+     * @param userId 用户id
+     * @return {@link BaseResult}<{@link UserInfoDO}>
+     */
+    @RequestMapping(value = "/updateUserInfo.json", method = { RequestMethod.GET, RequestMethod.POST })
+    @ResponseBody
+    public BaseResult updateUserInfo(String userId,
+                                     @RequestParam(value = "userAvatar", required = false) String userAvatar,
+                                     @RequestParam(value = "userName", required = false) String userName) {
+        return userInfoService.updateUserInfo(userId, userAvatar, userName);
     }
 }

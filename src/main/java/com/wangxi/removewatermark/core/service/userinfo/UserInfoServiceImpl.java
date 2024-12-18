@@ -14,7 +14,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
@@ -27,7 +26,6 @@ import com.wangxi.removewatermark.common.servicefacade.enums.ErrorCodeEnum;
 import com.wangxi.removewatermark.common.servicefacade.model.BaseResult;
 import com.wangxi.removewatermark.common.utils.AssertUtil;
 import com.wangxi.removewatermark.common.utils.exception.BizException;
-import com.wangxi.removewatermark.common.servicefacade.model.UserBizInfo;
 import com.wangxi.removewatermark.common.servicefacade.model.UserLoginResult;
 import com.wangxi.removewatermark.core.model.WechatConfig;
 import com.wangxi.removewatermark.core.service.resttemplate.RestTemplateService;
@@ -63,18 +61,15 @@ public class UserInfoServiceImpl implements UserInfoService {
      * 登录
      *
      * @param code      临时登录凭证 code
-     * @param nickName  昵称
-     * @param avatarUrl 头像
      * @return {@link BaseResult}<{@link UserLoginResult}>
      */
     @Override
-    public BaseResult<UserLoginResult> login(String code, String nickName, String avatarUrl) {
+    public BaseResult<UserLoginResult> login(String code) {
         BaseResult<UserLoginResult> baseResult = new BaseResult<>();
         ServiceTemplate.execute(baseResult, new ServiceCallback() {
             @Override
             public void checkParameter() {
                 AssertUtil.assertNotBlank(code, "临时登录凭证不能为空");
-                AssertUtil.assertNotBlank(nickName, "用户昵称不能为空");
             }
 
             @Override
@@ -84,7 +79,7 @@ public class UserInfoServiceImpl implements UserInfoService {
                 String userId = fetchOpenId(code);
                 // 用户信息记录
                 result.setOpenId(userId);
-                if (saveUserInfo(userId, nickName, avatarUrl)) {
+                if (saveUserInfo(userId)) {
                     result.setTodayFirstTimeLoginText(String.format("每日首次登录可获取%s次免费解析次数～",
                         WechatConfig.getUserSignInAddNumber()));
                 }
@@ -93,8 +88,8 @@ public class UserInfoServiceImpl implements UserInfoService {
 
             @Override
             public void finalLog() {
-                LOGGER.debug(String.format("用户登录，入参[code:%s, nickName:%s], 出参[baseResult:%s]",
-                    code, nickName, baseResult));
+                LOGGER.debug(String.format("用户登录，入参[code:%s], 出参[baseResult:%s]",
+                    code, baseResult));
             }
 
             @Override
@@ -106,38 +101,82 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     /**
-     * 查询业务信息
+     * 查询用户信息
      *
-     * @param openId 开放id
-     * @return {@link BaseResult}<{@link UserBizInfo}>
+     * @param userId 用户id
+     * @return {@link BaseResult}<{@link UserInfoDO}>
      */
     @Override
-    public BaseResult<UserBizInfo> queryBizInfo(String openId) {
-        BaseResult<UserBizInfo> baseResult = new BaseResult<>();
+    public BaseResult<UserInfoDO> queryUserInfo(String userId) {
+        BaseResult<UserInfoDO> baseResult = new BaseResult<>();
         ServiceTemplate.execute(baseResult, new ServiceCallback() {
             @Override
             public void checkParameter() {
-                AssertUtil.assertNotBlank(openId, "开放id不能为空");
+                AssertUtil.assertNotBlank(userId, "用户id不能为空");
             }
 
             @Override
             public void process() {
-                UserBizInfo result = new UserBizInfo();
                 QueryWrapper<UserInfoDO> queryWrapper = new QueryWrapper<>();
-                queryWrapper.lambda().eq(UserInfoDO::getUserId, openId);
+                queryWrapper.lambda().eq(UserInfoDO::getUserId, userId);
                 UserInfoDO userInfoDO = userInfoDAO.selectOne(queryWrapper);
-                BeanUtils.copyProperties(userInfoDO, result);
-                baseResult.setResultData(result);
+                baseResult.setResultData(userInfoDO);
             }
 
             @Override
             public void finalLog() {
-                LOGGER.debug(String.format("查询业务信息，入参[openId:%s], 出参[baseResult:%s]", openId, baseResult));
+                LOGGER.debug(String.format("查询用户信息，入参[userId:%s], 出参[baseResult:%s]", userId, baseResult));
             }
 
             @Override
             public List<String> extraDigestLogItemList() {
-                return Collections.singletonList(openId);
+                return Collections.singletonList(userId);
+            }
+        });
+        return baseResult;
+    }
+
+    /**
+     * 更新用户信息
+     *
+     * @param userId     用户id
+     * @param userAvatar 用户头像
+     * @param userName   用户名
+     * @return {@link BaseResult}
+     */
+    @Override
+    public BaseResult updateUserInfo(String userId, String userAvatar, String userName) {
+        BaseResult baseResult = new BaseResult<>();
+        ServiceTemplate.execute(baseResult, new ServiceCallback() {
+            @Override
+            public void checkParameter() {
+                AssertUtil.assertNotBlank(userId, "用户id不能为空");
+            }
+
+            @Override
+            public void process() {
+                QueryWrapper<UserInfoDO> queryWrapper = new QueryWrapper<>();
+                queryWrapper.lambda().eq(UserInfoDO::getUserId, userId);
+                UserInfoDO userInfoDO = userInfoDAO.selectOne(queryWrapper);
+                AssertUtil.assertNotNull(userInfoDO, "用户信息查询为空！");
+                if (StringUtils.isNotBlank(userAvatar)) {
+                    userInfoDO.setUserAvatar(userAvatar);
+                }
+                if (StringUtils.isNotBlank(userName)) {
+                    userInfoDO.setUserName(userName);
+                }
+                userInfoDAO.updateById(userInfoDO);
+            }
+
+            @Override
+            public void finalLog() {
+                LOGGER.debug(String.format("更新用户信息，入参[userId:%s, userAvatar:%s, userName:%s], 出参[baseResult:%s]",
+                    userId, userAvatar, userName, baseResult));
+            }
+
+            @Override
+            public List<String> extraDigestLogItemList() {
+                return Collections.singletonList(userId);
             }
         });
         return baseResult;
@@ -170,11 +209,9 @@ public class UserInfoServiceImpl implements UserInfoService {
      * 保存用户信息，并且返回是否今日首次登录
      *
      * @param userId    用户id
-     * @param userName  用户名
-     * @param avatarUrl 头像
      * @return boolean
      */
-    private boolean saveUserInfo(String userId, String userName, String avatarUrl) {
+    private boolean saveUserInfo(String userId) {
         QueryWrapper<UserInfoDO> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda().eq(UserInfoDO::getUserId, userId);
         UserInfoDO userInfoDO = userInfoDAO.selectOne(queryWrapper);
@@ -183,8 +220,6 @@ public class UserInfoServiceImpl implements UserInfoService {
         if (userInfoDO == null) {
             userInfoDO = new UserInfoDO();
             userInfoDO.setUserId(userId);
-            userInfoDO.setUserName(userName);
-            userInfoDO.setUserAvatar(avatarUrl);
             userInfoDO.setLatestSignInTime(now);
             userInfoDO.setTotalSignInNumber(1L);
             userInfoDO.setAvailableNumber(WechatConfig.getUserSignInAddNumber());
@@ -196,8 +231,6 @@ public class UserInfoServiceImpl implements UserInfoService {
             }
             return true;
         }
-        userInfoDO.setUserName(userName);
-        userInfoDO.setUserAvatar(avatarUrl);
         userInfoDO.setGmtModified(now);
         // 最新签到时间为今天代表不是今天第一次
         if (DateUtils.isSameDay(now, userInfoDO.getLatestSignInTime())) {
