@@ -49,6 +49,16 @@ public enum ErrorCodeEnum {
      * 用户信息为空
      */
     USER_INFO_NULL(false, "USER_INFO_NULL", "用户信息查询为空，请登录后再重试"),
+
+    /**
+     * SFTP关闭连接失败
+     */
+    SFTP_DISCONNECT_FAIL(true, "SFTP_DISCONNECT_FAIL", "请重试"),
+
+    /**
+     * SFTP上传文件失败
+     */
+    SFTP_UPLOAD_FILE_FAIL(true, "SFTP_UPLOAD_FILE_FAIL", "请重试"),
     ;
 
     /**

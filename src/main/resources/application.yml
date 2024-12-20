@@ -1,29 +1,36 @@
 spring:
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://172.25.21.82:3306/java_removewatermark?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf-8
-    username: dms_wx
-    password: Wx.080032
+    datasource:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://172.25.21.82:3306/java_removewatermark?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf-8
+        username: dms_wx
+        password: Wx.080032
 
-  mvc:
-    throw-exception-if-no-handler-found: false
-  resources:
-    add-mappings: false
+    mvc:
+        throw-exception-if-no-handler-found: false
+    resources:
+        add-mappings: false
 
 server:
-  port: 19708
-  ssl:
-    enabled: true
-    key-store-password: 9jmopfh6
-    key-store-type: JKS
-    key-store: classpath:www.ruirui.fun.jks
-    client-auth: none
+    port: 19708
+    ssl:
+        enabled: true
+        key-store-password: 9jmopfh6
+        key-store-type: JKS
+        key-store: classpath:www.ruirui.fun.jks
+        client-auth: none
 
 project:
-  wechat:
-    app-id: wxdbfd5d962e94f4a4
-    secret: 6c52ea7bb2394f42ebd0368b0a6423cc
-    user-sign-in-add-number: 3
+    wechat:
+        app-id: wxdbfd5d962e94f4a4
+        secret: 6c52ea7bb2394f42ebd0368b0a6423cc
+        user-sign-in-add-number: 3
 
-  logging:
-    level: INFO
+    file:
+        host: 116.62.219.48
+        user-name: root
+        password: Wx.080032
+        avatar-file-path: classpath:/avatar/
+        avatar-file-prefix: https://www.ruirui.fun:443/removewatermark/
+
+    logging:
+        level: DEBUG
