@@ -41,27 +41,27 @@ public class FileConfig {
     private static String avatarFilePrefix;
 
     @Value("${project.file.host}")
-    public static void setHost(String host) {
+    public void setHost(String host) {
         FileConfig.host = host;
     }
 
     @Value("${project.file.user-name}")
-    public static void setUserName(String userName) {
+    public void setUserName(String userName) {
         FileConfig.userName = userName;
     }
 
     @Value("${project.file.password}")
-    public static void setPassword(String password) {
+    public void setPassword(String password) {
         FileConfig.password = password;
     }
 
     @Value("${project.file.avatar-file-path}")
-    public static void setAvatarFilePath(String avatarFilePath) {
+    public void setAvatarFilePath(String avatarFilePath) {
         FileConfig.avatarFilePath = avatarFilePath;
     }
 
     @Value("${project.file.avatar-file-prefix}")
-    public static void setAvatarFilePrefix(String avatarFilePrefix) {
+    public void setAvatarFilePrefix(String avatarFilePrefix) {
         FileConfig.avatarFilePrefix = avatarFilePrefix;
     }
 
