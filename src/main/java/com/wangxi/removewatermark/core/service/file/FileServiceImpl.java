@@ -48,6 +48,8 @@ public class FileServiceImpl implements FileService {
         try {
             session = (new JSch()).getSession(FileConfig.getUserName(), FileConfig.getHost());
             session.setPassword(FileConfig.getPassword());
+            // 设置为不验证密钥
+            session.setConfig("StrictHostKeyChecking", "no");
             session.connect(connectTimeoutMs);
             channel = session.openChannel("sftp");
             channel.connect(connectTimeoutMs);
