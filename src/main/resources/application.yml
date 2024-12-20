@@ -29,7 +29,7 @@ project:
         host: 116.62.219.48
         user-name: root
         password: Wx.080032
-        avatar-file-path: /root/java_project/weixinminiapp/removewatermark/avatar/
+        avatar-file-path: /etc/nginx/removewatermark/avatar/
         avatar-file-prefix: https://www.ruirui.fun:443/removewatermark/avatar/
 
     logging:
