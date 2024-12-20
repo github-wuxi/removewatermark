@@ -8,7 +8,6 @@ import javax.annotation.Resource;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -59,14 +58,27 @@ public class UserController {
     /**
      * 更新用户信息
      *
-     * @param userId 用户id
-     * @return {@link BaseResult}<{@link UserInfoDO}>
+     * @param userId   用户id
+     * @param userName 用户名
+     * @return {@link BaseResult}
      */
     @RequestMapping(value = "/updateUserInfo.json", method = { RequestMethod.GET, RequestMethod.POST })
     @ResponseBody
-    public BaseResult updateUserInfo(String userId,
-                                     @RequestParam(value = "userAvatar", required = false) String userAvatar,
-                                     @RequestParam(value = "userName", required = false) String userName) {
-        return userInfoService.updateUserInfo(userId, userAvatar, userName);
+    public BaseResult updateUserInfo(String userId, String userName) {
+        return userInfoService.updateUserInfo(userId, userName);
+    }
+
+
+    /**
+     * 上传用户头像
+     *
+     * @param userId          用户id
+     * @param avatarUrlBase64 头像url base64编码的
+     * @return {@link BaseResult}
+     */
+    @RequestMapping(value = "/uploadUserAvatar.json", method = { RequestMethod.GET, RequestMethod.POST })
+    @ResponseBody
+    public BaseResult<String> uploadUserAvatar(String userId, String avatarUrlBase64) {
+        return userInfoService.uploadUserAvatar(userId, avatarUrlBase64);
     }
 }

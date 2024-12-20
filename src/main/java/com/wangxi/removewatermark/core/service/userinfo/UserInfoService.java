@@ -35,9 +35,17 @@ public interface UserInfoService {
      * 更新用户信息
      *
      * @param userId     用户id
-     * @param userAvatar 用户头像
      * @param userName   用户名
      * @return {@link BaseResult}
      */
-    BaseResult updateUserInfo(String userId, String userAvatar, String userName);
+    BaseResult updateUserInfo(String userId, String userName);
+
+    /**
+     * 上传用户头像
+     *
+     * @param userId          用户id
+     * @param avatarUrlBase64 头像url base64
+     * @return {@link BaseResult}<{@link String}>
+     */
+    BaseResult<String> uploadUserAvatar(String userId, String avatarUrlBase64);
 }

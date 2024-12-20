@@ -4,6 +4,7 @@
  */
 package com.wangxi.removewatermark.core.service.userinfo;
 
+import java.util.Base64;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -27,7 +28,9 @@ import com.wangxi.removewatermark.common.servicefacade.model.BaseResult;
 import com.wangxi.removewatermark.common.utils.AssertUtil;
 import com.wangxi.removewatermark.common.utils.exception.BizException;
 import com.wangxi.removewatermark.common.servicefacade.model.UserLoginResult;
+import com.wangxi.removewatermark.core.model.FileConfig;
 import com.wangxi.removewatermark.core.model.WechatConfig;
+import com.wangxi.removewatermark.core.service.file.FileService;
 import com.wangxi.removewatermark.core.service.resttemplate.RestTemplateService;
 import com.wangxi.removewatermark.core.service.template.ServiceCallback;
 import com.wangxi.removewatermark.core.service.template.ServiceTemplate;
@@ -56,6 +59,12 @@ public class UserInfoServiceImpl implements UserInfoService {
      */
     @Resource
     private UserInfoDAO userInfoDAO;
+
+    /**
+     * 文件服务
+     */
+    @Resource
+    private FileService fileService;
 
     /**
      * 登录
@@ -140,17 +149,17 @@ public class UserInfoServiceImpl implements UserInfoService {
      * 更新用户信息
      *
      * @param userId     用户id
-     * @param userAvatar 用户头像
      * @param userName   用户名
      * @return {@link BaseResult}
      */
     @Override
-    public BaseResult updateUserInfo(String userId, String userAvatar, String userName) {
+    public BaseResult updateUserInfo(String userId, String userName) {
         BaseResult baseResult = new BaseResult<>();
         ServiceTemplate.execute(baseResult, new ServiceCallback() {
             @Override
             public void checkParameter() {
                 AssertUtil.assertNotBlank(userId, "用户id不能为空");
+                AssertUtil.assertNotBlank(userName, "用户名称不能为空");
             }
 
             @Override
@@ -159,19 +168,65 @@ public class UserInfoServiceImpl implements UserInfoService {
                 queryWrapper.lambda().eq(UserInfoDO::getUserId, userId);
                 UserInfoDO userInfoDO = userInfoDAO.selectOne(queryWrapper);
                 AssertUtil.assertNotNull(userInfoDO, "用户信息查询为空！");
-                if (StringUtils.isNotBlank(userAvatar)) {
-                    userInfoDO.setUserAvatar(userAvatar);
-                }
-                if (StringUtils.isNotBlank(userName)) {
-                    userInfoDO.setUserName(userName);
-                }
+                userInfoDO.setUserName(userName);
                 userInfoDAO.updateById(userInfoDO);
             }
 
             @Override
             public void finalLog() {
-                LOGGER.debug(String.format("更新用户信息，入参[userId:%s, userAvatar:%s, userName:%s], 出参[baseResult:%s]",
-                    userId, userAvatar, userName, baseResult));
+                LOGGER.debug(String.format("更新用户信息，入参[userId:%s, userName:%s], 出参[baseResult:%s]",
+                    userId, userName, baseResult));
+            }
+
+            @Override
+            public List<String> extraDigestLogItemList() {
+                return Collections.singletonList(userId);
+            }
+        });
+        return baseResult;
+    }
+
+    /**
+     * 上传用户头像
+     *
+     * @param userId          用户id
+     * @param avatarUrlBase64 头像url base64
+     * @return {@link BaseResult}<{@link String}>
+     */
+    @Override
+    public BaseResult<String> uploadUserAvatar(String userId, String avatarUrlBase64) {
+        BaseResult<String> baseResult = new BaseResult<>();
+        ServiceTemplate.execute(baseResult, new ServiceCallback() {
+            @Override
+            public void checkParameter() {
+                AssertUtil.assertNotBlank(userId, "用户id不能为空");
+                AssertUtil.assertNotBlank(avatarUrlBase64, "用户头像不能为空");
+            }
+
+            @Override
+            public void process() {
+                Base64.Decoder decoder = Base64.getDecoder();
+                byte[] urlBytes = decoder.decode(avatarUrlBase64);
+                String fileName = userId + ".png";
+                // 用户头像存到服务器
+                fileService.sftpUpload(urlBytes, fileName, FileConfig.getAvatarFilePath());
+
+                QueryWrapper<UserInfoDO> queryWrapper = new QueryWrapper<>();
+                queryWrapper.lambda().eq(UserInfoDO::getUserId, userId);
+                UserInfoDO userInfoDO = userInfoDAO.selectOne(queryWrapper);
+                AssertUtil.assertNotNull(userInfoDO, "用户信息查询为空！");
+                // 对应nginx配置文件访问
+                String userAvatar = FileConfig.getAvatarFilePrefix() + fileName;
+                userInfoDO.setUserAvatar(userAvatar);
+                userInfoDAO.updateById(userInfoDO);
+
+                baseResult.setResultData(userAvatar);
+            }
+
+            @Override
+            public void finalLog() {
+                LOGGER.debug(String.format("上传用户头像，入参[userId:%s, avatarUrlBase64:%s], 出参[baseResult:%s]",
+                    userId, avatarUrlBase64, baseResult));
             }
 
             @Override
