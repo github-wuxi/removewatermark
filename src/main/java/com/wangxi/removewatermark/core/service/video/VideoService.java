@@ -32,4 +32,13 @@ public interface VideoService {
      * @return {@link BaseResult}<{@link QueryRecordsResult}>
      */
     BaseResult<QueryRecordsResult> queryRecords(QueryRecordsRequest request);
+
+    /**
+     * 转发下载网址
+     *
+     * @param videoSource 视频源
+     * @param url         url
+     * @return {@link String}
+     */
+    String forwardDownloadUrl(String videoSource, String url);
 }

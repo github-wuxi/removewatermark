@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.wangxi.removewatermark.common.servicefacade.model.BaseResult;
 import com.wangxi.removewatermark.common.servicefacade.model.QueryRecordsRequest;
 import com.wangxi.removewatermark.common.servicefacade.model.QueryRecordsResult;
-import com.wangxi.removewatermark.core.service.resttemplate.RestTemplateService;
 import com.wangxi.removewatermark.core.service.video.VideoService;
 
 /**
@@ -29,12 +28,6 @@ import com.wangxi.removewatermark.core.service.video.VideoService;
 @RestController
 @RequestMapping("removewatermark/video")
 public class VideoController {
-    /**
-     * http请求服务
-     */
-    @Resource
-    private RestTemplateService restTemplateService;
-
     /**
      * 视频服务
      */
@@ -67,15 +60,16 @@ public class VideoController {
     }
 
     /**
-     * 转发下载的视频地址
+     * 转发下载视频地址
      *
-     * @param url url
+     * @param videoSource 视频源
+     * @param url         url
      * @return {@link ResponseEntity}<{@link String}>
      */
     @RequestMapping(value = "/forwardDownloadUrl.json", method = { RequestMethod.GET, RequestMethod.POST })
-    public ResponseEntity<String> forwardDownloadUrl(String url) {
-        // 有些视频地址需要转发才能下载，这里转发一下
-        String forwardUrl = restTemplateService.headForHeaders(url).getLocation().toString();
-        return ResponseEntity.ok().body(forwardUrl);
+    public ResponseEntity<String> forwardDownloadUrl(String videoSource, String url) {
+        // 1、微信小程序下载视频会域名前缀管控，这里可以域名前缀统一
+        // 2、有些视频地址需要转发才能下载，这里转发一下
+        return ResponseEntity.ok().body(videoService.forwardDownloadUrl(videoSource, url));
     }
 }

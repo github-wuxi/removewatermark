@@ -169,6 +169,21 @@ public class VideoServiceImpl implements VideoService {
     }
 
     /**
+     * 转发下载网址
+     *
+     * @param videoSource 视频源
+     * @param url         url
+     * @return {@link String}
+     */
+    @Override
+    public String forwardDownloadUrl(String videoSource, String url) {
+        String forwardDownloadUrl = parserMap.get(videoSource).forwardDownloadUrl(url);
+        LOGGER.debug(String.format("转发下载网址，入参[videoSource:%s, url:%s], 出参[forwardDownloadUrl:%s]",
+            videoSource, url, forwardDownloadUrl));
+        return forwardDownloadUrl;
+    }
+
+    /**
      * 解析视频
      *
      * @param url    url

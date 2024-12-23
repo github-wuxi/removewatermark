@@ -20,4 +20,12 @@ public interface Parser {
      * @param originalUrl 原始地址
      */
     VideoDTO parseVideo(String originalUrl);
+
+    /**
+     * 转发下载网址
+     *
+     * @param videoUrl 视频网址
+     * @return {@link String}
+     */
+    String forwardDownloadUrl(String videoUrl);
 }
