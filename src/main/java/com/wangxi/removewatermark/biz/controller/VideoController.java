@@ -67,9 +67,9 @@ public class VideoController {
      * @return {@link ResponseEntity}<{@link String}>
      */
     @RequestMapping(value = "/forwardDownloadUrl.json", method = { RequestMethod.GET, RequestMethod.POST })
-    public ResponseEntity<String> forwardDownloadUrl(String videoSource, String url) {
+    public String forwardDownloadUrl(String videoSource, String url) {
         // 1、微信小程序下载视频会域名前缀管控，这里可以域名前缀统一
         // 2、有些视频地址需要转发才能下载，这里转发一下
-        return ResponseEntity.ok().body(videoService.forwardDownloadUrl(videoSource, url));
+        return "redirect:" + videoService.forwardDownloadUrl(videoSource, url);
     }
 }
