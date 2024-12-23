@@ -90,13 +90,14 @@ public abstract class AbstractParser implements Parser {
     }
 
     /**
+     * 获取下载url
      * 默认不需要转发
      *
      * @param videoUrl 视频网址
      * @return {@link String}
      */
     @Override
-    public String forwardDownloadUrl(String videoUrl) {
+    public String fetchDownloadUrl(String videoUrl) {
         return videoUrl;
     }
 }

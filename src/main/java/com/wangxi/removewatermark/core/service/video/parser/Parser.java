@@ -22,10 +22,10 @@ public interface Parser {
     VideoDTO parseVideo(String originalUrl);
 
     /**
-     * 转发下载网址
+     * 获取下载url
      *
      * @param videoUrl 视频网址
      * @return {@link String}
      */
-    String forwardDownloadUrl(String videoUrl);
+    String fetchDownloadUrl(String videoUrl);
 }
