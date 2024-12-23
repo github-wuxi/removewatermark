@@ -70,6 +70,6 @@ public class VideoController {
     public String forwardDownloadUrl(String videoSource, String url) {
         // 1、微信小程序下载视频会域名前缀管控，这里可以域名前缀统一
         // 2、有些视频地址需要转发才能下载，这里转发一下
-        return "redirect:" + videoService.forwardDownloadUrl(videoSource, url);
+        return "forward:" + videoService.forwardDownloadUrl(videoSource, url);
     }
 }
