@@ -186,7 +186,7 @@ public class VideoServiceImpl implements VideoService {
             @Override
             public void process() {
                 QueryWrapper<ParseVideoRecordDO> queryWrapper = new QueryWrapper<>();
-                queryWrapper.eq("video_id", videoId).orderByDesc("gmt_create");
+                queryWrapper.eq("video_id", videoId).orderByDesc("gmt_create").last("limit 1");
                 ParseVideoRecordDO recordDO = parseVideoRecordDAO.selectOne(queryWrapper);
                 AssertUtil.assertNotNull(recordDO, "视频id查询出的解析记录不能为空");
                 VideoSourceEnum videoSourceEnum = VideoSourceEnum.getByCode(recordDO.getVideoSource());
