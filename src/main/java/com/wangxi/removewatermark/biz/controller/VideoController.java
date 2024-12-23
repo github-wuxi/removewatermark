@@ -6,7 +6,6 @@ package com.wangxi.removewatermark.biz.controller;
 
 import javax.annotation.Resource;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -60,16 +59,15 @@ public class VideoController {
     }
 
     /**
-     * 转发下载视频地址
+     * 获取下载url
+     * 如抖音需要二级域名https://v11-cold1.douyinvod.com/才可以下载，需要转发一下
      *
-     * @param videoSource 视频源
-     * @param url         url
-     * @return {@link ResponseEntity}<{@link String}>
+     * @param videoId 视频id
+     * @return {@link BaseResult}<{@link String}>
      */
-    @RequestMapping(value = "/forwardDownloadUrl.json", method = { RequestMethod.GET, RequestMethod.POST })
-    public String forwardDownloadUrl(String videoSource, String url) {
-        // 1、微信小程序下载视频会域名前缀管控，这里可以域名前缀统一
-        // 2、有些视频地址需要转发才能下载，这里转发一下
-        return "forward:" + videoService.forwardDownloadUrl(videoSource, url);
+    @RequestMapping(value = "/fetchDownloadUrl.json", method = { RequestMethod.GET, RequestMethod.POST })
+    @ResponseBody
+    public BaseResult<String> fetchDownloadUrl(String videoId) {
+        return videoService.fetchDownloadUrl(videoId);
     }
 }

@@ -34,11 +34,10 @@ public interface VideoService {
     BaseResult<QueryRecordsResult> queryRecords(QueryRecordsRequest request);
 
     /**
-     * 转发下载网址
+     * 获取下载url
      *
-     * @param videoSource 视频源
-     * @param url         url
-     * @return {@link String}
+     * @param videoId 视频id
+     * @return {@link BaseResult}<{@link String}>
      */
-    String forwardDownloadUrl(String videoSource, String url);
+    BaseResult<String> fetchDownloadUrl(String videoId);
 }

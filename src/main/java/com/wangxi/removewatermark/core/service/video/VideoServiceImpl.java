@@ -169,19 +169,43 @@ public class VideoServiceImpl implements VideoService {
     }
 
     /**
-     * 转发下载网址
+     * 获取下载url
      *
-     * @param videoSource 视频源
-     * @param url         url
-     * @return {@link String}
+     * @param videoId 视频id
+     * @return {@link BaseResult}<{@link String}>
      */
     @Override
-    public String forwardDownloadUrl(String videoSource, String url) {
-        VideoSourceEnum videoSourceEnum = VideoSourceEnum.getByCode(videoSource);
-        String forwardDownloadUrl = parserMap.get(videoSourceEnum.getParserBeanId()).forwardDownloadUrl(url);
-        LOGGER.debug(String.format("转发下载网址，入参[videoSource:%s, url:%s], 出参[forwardDownloadUrl:%s]",
-            videoSource, url, forwardDownloadUrl));
-        return forwardDownloadUrl;
+    public BaseResult<String> fetchDownloadUrl(String videoId) {
+        BaseResult<String> baseResult = new BaseResult<>();
+        ServiceTemplate.execute(baseResult, new ServiceCallback() {
+            @Override
+            public void checkParameter() {
+                AssertUtil.assertNotBlank(videoId, "视频id不能为空");
+            }
+
+            @Override
+            public void process() {
+                QueryWrapper<ParseVideoRecordDO> queryWrapper = new QueryWrapper<>();
+                queryWrapper.eq("video_id", videoId).orderByDesc("gmt_create");
+                ParseVideoRecordDO recordDO = parseVideoRecordDAO.selectOne(queryWrapper);
+                AssertUtil.assertNotNull(recordDO, "视频id查询出的解析记录不能为空");
+                VideoSourceEnum videoSourceEnum = VideoSourceEnum.getByCode(recordDO.getVideoSource());
+                String downloadUrl = parserMap.get(videoSourceEnum.getParserBeanId())
+                    .fetchDownloadUrl(recordDO.getVideoParsedUrl());
+                baseResult.setResultData(downloadUrl);
+            }
+
+            @Override
+            public void finalLog() {
+                LOGGER.debug(String.format("获取下载url，入参[videoId:%s], 出参[baseResult:%s]", videoId, baseResult));
+            }
+
+            @Override
+            public List<String> extraDigestLogItemList() {
+                return null;
+            }
+        });
+        return baseResult;
     }
 
     /**
