@@ -177,7 +177,8 @@ public class VideoServiceImpl implements VideoService {
      */
     @Override
     public String forwardDownloadUrl(String videoSource, String url) {
-        String forwardDownloadUrl = parserMap.get(videoSource).forwardDownloadUrl(url);
+        VideoSourceEnum videoSourceEnum = VideoSourceEnum.getByCode(videoSource);
+        String forwardDownloadUrl = parserMap.get(videoSourceEnum.getParserBeanId()).forwardDownloadUrl(url);
         LOGGER.debug(String.format("转发下载网址，入参[videoSource:%s, url:%s], 出参[forwardDownloadUrl:%s]",
             videoSource, url, forwardDownloadUrl));
         return forwardDownloadUrl;
