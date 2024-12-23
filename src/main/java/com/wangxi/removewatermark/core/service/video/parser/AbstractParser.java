@@ -88,4 +88,15 @@ public abstract class AbstractParser implements Parser {
         }
         return httpHeaders;
     }
+
+    /**
+     * 默认不需要转发
+     *
+     * @param videoUrl 视频网址
+     * @return {@link String}
+     */
+    @Override
+    public String forwardDownloadUrl(String videoUrl) {
+        return videoUrl;
+    }
 }

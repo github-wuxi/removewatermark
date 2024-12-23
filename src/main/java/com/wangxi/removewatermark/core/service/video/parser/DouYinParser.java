@@ -96,4 +96,15 @@ public class DouYinParser extends AbstractParser {
         }
         return null;
     }
+
+    /**
+     * 转发下载网址
+     *
+     * @param videoUrl 视频网址
+     * @return {@link String}
+     */
+    @Override
+    public String forwardDownloadUrl(String videoUrl) {
+        return restTemplateService.headForHeaders(videoUrl).getLocation().toString();
+    }
 }
