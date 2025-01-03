@@ -209,7 +209,7 @@ public class UserInfoServiceImpl implements UserInfoService {
             public void process() {
                 Base64.Decoder decoder = Base64.getDecoder();
                 byte[] urlBytes = decoder.decode(avatarUrlBase64);
-                String newFileName = userId + new Date() + ".png";
+                String newFileName = userId + new Date().getTime() + ".png";
                 // 新用户头像存到服务器
                 fileService.sftpUpload(urlBytes, newFileName, FileConfig.getAvatarFilePath());
 
