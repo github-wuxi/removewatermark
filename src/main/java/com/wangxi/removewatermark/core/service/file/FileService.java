@@ -19,4 +19,12 @@ public interface FileService {
      * @param filePath  文件路径
      */
     void sftpUpload(byte[] fileBytes, String fileName, String filePath);
+
+    /**
+     * 删除
+     *
+     * @param filePath 文件路径
+     * @param fileName 文件名称
+     */
+    void delete(String filePath, String fileName);
 }

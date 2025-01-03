@@ -59,6 +59,11 @@ public enum ErrorCodeEnum {
      * SFTP上传文件失败
      */
     SFTP_UPLOAD_FILE_FAIL(true, "SFTP_UPLOAD_FILE_FAIL", "请重试"),
+
+    /**
+     * 文件删除失败
+     */
+    FILE_DELETE_FAIL(true, "FILE_DELETE_FAIL", "请重试"),
     ;
 
     /**

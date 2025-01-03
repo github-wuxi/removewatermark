@@ -5,6 +5,9 @@
 package com.wangxi.removewatermark.core.service.file;
 
 import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
+import java.nio.file.Paths;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -76,6 +79,25 @@ public class FileServiceImpl implements FileService {
                 LOGGER.error(String.format("sftpUpload关闭连接(fileName:%s)，出现异常", fileName), e);
                 throw new BizException(ErrorCodeEnum.SFTP_DISCONNECT_FAIL);
             }
+        }
+    }
+
+    /**
+     * 删除
+     *
+     * @param filePath 文件路径
+     * @param fileName 文件名称
+     */
+    @Override
+    public void delete(String filePath, String fileName) {
+        try {
+            // 删除文件
+            Files.delete(Paths.get(filePath + fileName));
+        } catch (NoSuchFileException fe) {
+            LOGGER.warn(String.format("文件delete(filePath:%s, fileName:%s)时不存在", filePath, fileName));
+        } catch (Exception e) {
+            LOGGER.error(String.format("文件delete(filePath:%s, fileName:%s)，出现异常", filePath, fileName), e);
+            throw new BizException(ErrorCodeEnum.FILE_DELETE_FAIL);
         }
     }
 }

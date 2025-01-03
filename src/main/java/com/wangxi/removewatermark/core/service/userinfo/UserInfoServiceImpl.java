@@ -8,6 +8,8 @@ import java.util.Base64;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.annotation.Resource;
 
@@ -207,16 +209,27 @@ public class UserInfoServiceImpl implements UserInfoService {
             public void process() {
                 Base64.Decoder decoder = Base64.getDecoder();
                 byte[] urlBytes = decoder.decode(avatarUrlBase64);
-                String fileName = userId + ".png";
-                // 用户头像存到服务器
-                fileService.sftpUpload(urlBytes, fileName, FileConfig.getAvatarFilePath());
+                String newFileName = userId + new Date() + ".png";
+                // 新用户头像存到服务器
+                fileService.sftpUpload(urlBytes, newFileName, FileConfig.getAvatarFilePath());
 
                 QueryWrapper<UserInfoDO> queryWrapper = new QueryWrapper<>();
                 queryWrapper.lambda().eq(UserInfoDO::getUserId, userId);
                 UserInfoDO userInfoDO = userInfoDAO.selectOne(queryWrapper);
                 AssertUtil.assertNotNull(userInfoDO, "用户信息查询为空！");
-                // 对应nginx配置文件访问
-                String userAvatar = FileConfig.getAvatarFilePrefix() + fileName;
+
+                // 新头像存成功后，旧头像删除
+                if (StringUtils.isNotBlank(userInfoDO.getUserAvatar())) {
+                    // 正则表达式，匹配以/为分隔符后的最后一部分
+                    String regex = "([^/]+\\.png)$";
+                    Pattern pattern = Pattern.compile(regex);
+                    Matcher matcher = pattern.matcher(userInfoDO.getUserAvatar());
+                    if (matcher.find()) {
+                        fileService.delete(FileConfig.getAvatarFilePath(), matcher.group(1));
+                    }
+                }
+                // 对应nginx配置文件访问，更新新头像
+                String userAvatar = FileConfig.getAvatarFilePrefix() + newFileName;
                 userInfoDO.setUserAvatar(userAvatar);
                 userInfoDAO.updateById(userInfoDO);
 
