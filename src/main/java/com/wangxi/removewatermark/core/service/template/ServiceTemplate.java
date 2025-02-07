@@ -4,9 +4,7 @@
  */
 package com.wangxi.removewatermark.core.service.template;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,8 +12,6 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StopWatch;
 
 import org.apache.commons.lang3.StringUtils;
-
-import com.alibaba.fastjson.JSONObject;
 import com.wangxi.removewatermark.common.servicefacade.enums.ErrorCodeEnum;
 import com.wangxi.removewatermark.common.servicefacade.model.BaseResult;
 import com.wangxi.removewatermark.common.utils.MethodUtil;
@@ -81,14 +77,9 @@ public class ServiceTemplate {
                 extraDigestStr = String.join(CharsetConstants.COMMA, extraDigestLogItemList);
             }
             // 摘要打印：方法名、耗时、是否成功、是否可重试、结果码、额外摘要
-            Map<String, String> digestMap = new HashMap<>();
-            digestMap.put("method", declareMethod);
-            digestMap.put("costTimeMs", String.valueOf(stopWatch.getTotalTimeMillis()));
-            digestMap.put("success", String.valueOf(result.isSuccess()));
-            digestMap.put("retryFail", result.getErrorCode() == null ? StringUtils.EMPTY : String.valueOf(result.isRetryFail()));
-            digestMap.put("errorCode", result.getErrorCode() == null ? StringUtils.EMPTY : result.getErrorCode());
-            digestMap.put("extraDigestStr", extraDigestStr);
-            DIGEST_LOGGER.info(JSONObject.toJSONString(digestMap));
+            DIGEST_LOGGER.info(String.format("%s,%s,%s,%s,%s,%s", declareMethod, stopWatch.getTotalTimeMillis(),
+                result.isSuccess(), result.getErrorCode() == null ? StringUtils.EMPTY : result.isRetryFail(),
+                result.getErrorCode() == null ? StringUtils.EMPTY : result.getErrorCode(), extraDigestStr));
         }
     }
 }
