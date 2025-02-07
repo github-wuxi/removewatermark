@@ -77,7 +77,7 @@ public class ServiceTemplate {
                 extraDigestStr = String.join(CharsetConstants.COMMA, extraDigestLogItemList);
             }
             // 摘要打印：方法名、耗时、是否成功、是否可重试、结果码、额外摘要
-            DIGEST_LOGGER.info(String.format("%s,%s,%s,%s,%s,%s", declareMethod, stopWatch.getTotalTimeMillis(),
+            DIGEST_LOGGER.info(String.format("%s|%s|%s|%s|%s|%s", declareMethod, stopWatch.getTotalTimeMillis(),
                 result.isSuccess(), result.getErrorCode() == null ? StringUtils.EMPTY : result.isRetryFail(),
                 result.getErrorCode() == null ? StringUtils.EMPTY : result.getErrorCode(), extraDigestStr));
         }
