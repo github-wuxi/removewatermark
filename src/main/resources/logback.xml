@@ -7,10 +7,6 @@
     <appender name="BIZ-APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <append>true</append>
         <file>${logging_path}/biz.log</file>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <FileNamePattern>${logging_path}/biz.log.%d{yyyy-MM-dd}</FileNamePattern>
-            <MaxHistory>7</MaxHistory>
-        </rollingPolicy>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <pattern>${logging_pattern}</pattern>
             <charset>UTF-8</charset>
@@ -23,10 +19,6 @@
     <appender name="CORE-APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <append>true</append>
         <file>${logging_path}/core.log</file>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <FileNamePattern>${logging_path}/core.log.%d{yyyy-MM-dd}</FileNamePattern>
-            <MaxHistory>7</MaxHistory>
-        </rollingPolicy>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <pattern>${logging_pattern}</pattern>
             <charset>UTF-8</charset>
@@ -39,10 +31,6 @@
     <appender name="COMMON-APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <append>true</append>
         <file>${logging_path}/common.log</file>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <FileNamePattern>${logging_path}/common.log.%d{yyyy-MM-dd}</FileNamePattern>
-            <MaxHistory>7</MaxHistory>
-        </rollingPolicy>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <pattern>${logging_pattern}</pattern>
             <charset>UTF-8</charset>
@@ -55,10 +43,6 @@
     <appender name="COMMON-DAL-DIGEST-LOGGER-APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <append>true</append>
         <file>${logging_path}/common-dal-digest.log</file>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <FileNamePattern>${logging_path}/common-dal-digest.log.%d{yyyy-MM-dd}</FileNamePattern>
-            <MaxHistory>7</MaxHistory>
-        </rollingPolicy>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <pattern>${logging_pattern}</pattern>
             <charset>UTF-8</charset>
@@ -71,10 +55,6 @@
     <appender name="CORE-SERVICE-DIGEST-LOGGER-APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <append>true</append>
         <file>${logging_path}/core-service-digest.log</file>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <FileNamePattern>${logging_path}/core-service-digest.log.%d{yyyy-MM-dd}</FileNamePattern>
-            <MaxHistory>7</MaxHistory>
-        </rollingPolicy>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <pattern>${logging_pattern}</pattern>
             <charset>UTF-8</charset>
@@ -90,10 +70,6 @@
             <level>error</level>
         </filter>
         <file>${logging_path}/error.log</file>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <FileNamePattern>${logging_path}/error.log.%d{yyyy-MM-dd}</FileNamePattern>
-            <MaxHistory>7</MaxHistory>
-        </rollingPolicy>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <pattern>${logging_pattern}</pattern>
             <charset>UTF-8</charset>
