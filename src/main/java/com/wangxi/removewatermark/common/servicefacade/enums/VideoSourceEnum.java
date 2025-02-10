@@ -31,6 +31,11 @@ public enum VideoSourceEnum {
      * 快手
      */
     KUAI_SHOU("KUAI_SHOU", "快手", "kuaishou", "kuaiShouParser"),
+
+    /**
+     * 小红书
+     */
+    RED_NOTE("RED_NOTE", "小红书", "xhslink", "redNoteParser")
     ;
 
     /**
