@@ -143,7 +143,8 @@ public class VideoServiceImpl implements VideoService {
                     for (ParseVideoRecordDO recordDO : sqlPage.getRecords()) {
                         VideoDTO videoDTO = new VideoDTO();
                         BeanUtils.copyProperties(recordDO, videoDTO);
-                        videoDTO.setVideoTitle(String.format("%s、%s", ++index, videoDTO.getVideoTitle()));
+                        videoDTO.setVideoTitle(String.format("%s、【%s】%s", ++index,
+                            VideoSourceEnum.getByCode(videoDTO.getVideoSource()).getDesc(), videoDTO.getVideoTitle()));
                         videoList.add(videoDTO);
                     }
                 }

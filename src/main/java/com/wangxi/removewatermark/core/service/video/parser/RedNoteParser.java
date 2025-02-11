@@ -44,11 +44,11 @@ public class RedNoteParser extends AbstractParser {
         // 1、去除掉无用视频前后缀
         String url = fetchTargetUrl(originalUrl, "(https?://xhslink.com/[\\w/]+[a-zA-Z0-9])");
 
-        // 2、获取重定向后的地址，来获取视频id
+        // 2、获取重定向后的地址
         HttpHeaders headForResponse = restTemplateService.headForHeaders(url);
         url = headForResponse.getLocation().toString();
 
-        // 3、http调用api获取结果
+        // 3、http调用获取页面信息
         HttpHeaders httpHeaders = fetchHttpHeaders(url, null);
         String content = restTemplateService.fetchHttpEntity(url, httpHeaders, HttpMethod.GET, null, String.class);
         if (StringUtils.isBlank(content)) {
