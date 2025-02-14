@@ -44,6 +44,18 @@ public class UserController {
     }
 
     /**
+     * 激励
+     *
+     * @param userId 用户id
+     * @return {@link BaseResult}<{@link Long}> 激励次数
+     */
+    @RequestMapping(value = "/reward.json", method = { RequestMethod.GET, RequestMethod.POST })
+    @ResponseBody
+    public BaseResult<Long> reward(String userId) {
+        return userInfoService.reward(userId);
+    }
+
+    /**
      * 查询用户信息
      *
      * @param userId 用户id

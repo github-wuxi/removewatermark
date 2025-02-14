@@ -5,7 +5,7 @@
 package com.wangxi.removewatermark.core.model;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Configuration;
 
 /**
  * 文件配置
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
  * @author wuxi
  * @version $Id: FileConfig.java, v 0.1 2024-10-02 15:10 wuxi Exp $$
  */
-@Component
+@Configuration
 public class FileConfig {
     /**
      * 域名地址
