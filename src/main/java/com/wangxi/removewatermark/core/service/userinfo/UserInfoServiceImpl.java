@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.wangxi.removewatermark.common.dal.daointerface.UserInfoDAO;
 import com.wangxi.removewatermark.common.dal.dataobject.UserInfoDO;
 import com.wangxi.removewatermark.common.servicefacade.enums.ErrorCodeEnum;
@@ -99,13 +100,53 @@ public class UserInfoServiceImpl implements UserInfoService {
 
             @Override
             public void finalLog() {
-                LOGGER.debug(String.format("用户登录，入参[code:%s], 出参[baseResult:%s]",
-                    code, baseResult));
+                LOGGER.debug(String.format("用户登录，入参[code:%s], 出参[baseResult:%s]", code, baseResult));
             }
 
             @Override
             public List<String> extraDigestLogItemList() {
                 return null;
+            }
+        });
+        return baseResult;
+    }
+
+    /**
+     * 激励
+     *
+     * @param userId 用户id
+     * @return {@link BaseResult}<{@link Long}> 激励次数
+     */
+    @Override
+    public BaseResult<Long> reward(String userId) {
+        BaseResult<Long> baseResult = new BaseResult<>();
+        ServiceTemplate.execute(baseResult, new ServiceCallback() {
+            @Override
+            public void checkParameter() {
+                AssertUtil.assertNotBlank(userId, "用户id不能为空");
+                QueryWrapper<UserInfoDO> queryWrapper = new QueryWrapper<>();
+                queryWrapper.lambda().eq(UserInfoDO::getUserId, userId);
+                UserInfoDO userInfoDO = userInfoDAO.selectOne(queryWrapper);
+                AssertUtil.assertNotNull(userInfoDO, "请先登陆～");
+            }
+
+            @Override
+            public void process() {
+                UpdateWrapper<UserInfoDO> updateWrapper = new UpdateWrapper<>();
+                updateWrapper.eq("user_id", userId).setSql(
+                    String.format("available_number = available_number + %s", WechatConfig.getUserRewardAddNumber()));
+                userInfoDAO.update(null, updateWrapper);
+                baseResult.setResultData(WechatConfig.getUserRewardAddNumber());
+            }
+
+            @Override
+            public void finalLog() {
+                LOGGER.debug(String.format("用户激励，入参[userId:%s], 出参[baseResult:%s]", userId, baseResult));
+            }
+
+            @Override
+            public List<String> extraDigestLogItemList() {
+                return Collections.singletonList(userId);
             }
         });
         return baseResult;

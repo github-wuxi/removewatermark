@@ -23,7 +23,8 @@ project:
     wechat:
         app-id: wxdbfd5d962e94f4a4
         secret: 6c52ea7bb2394f42ebd0368b0a6423cc
-        user-sign-in-add-number: 3
+        user-sign-in-add-number: 2
+        user-reward-add-number: 1
 
     file:
         host: 116.62.219.48

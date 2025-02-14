@@ -24,6 +24,14 @@ public interface UserInfoService {
     BaseResult<UserLoginResult> login(String code);
 
     /**
+     * 激励
+     *
+     * @param userId 用户id
+     * @return {@link BaseResult}<{@link Long}> 激励次数
+     */
+    BaseResult<Long> reward(String userId);
+
+    /**
      * 查询用户信息
      *
      * @param userId 用户id

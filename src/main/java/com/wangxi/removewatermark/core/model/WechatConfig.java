@@ -5,7 +5,7 @@
 package com.wangxi.removewatermark.core.model;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Configuration;
 
 /**
  * 小程序配置
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
  * @author wuxi
  * @version $Id: WechatConfig.java, v 0.1 2024-10-02 15:10 wuxi Exp $$
  */
-@Component
+@Configuration
 public class WechatConfig {
     /**
      * 小程序id
@@ -30,6 +30,11 @@ public class WechatConfig {
      */
     private static long userSignInAddNumber;
 
+    /**
+     * 用户激励的增加次数
+     */
+    private static long userRewardAddNumber;
+
     @Value("${project.wechat.app-id}")
     private void setAppId(String appId) {
         WechatConfig.appId = appId;
@@ -43,6 +48,11 @@ public class WechatConfig {
     @Value("${project.wechat.user-sign-in-add-number}")
     private void setUserSignInAddNumber(long userSignInAddNumber) {
         WechatConfig.userSignInAddNumber = userSignInAddNumber;
+    }
+
+    @Value("${project.wechat.user-reward-add-number}")
+    private void setUserRewardAddNumber(long userRewardAddNumber) {
+        WechatConfig.userRewardAddNumber = userRewardAddNumber;
     }
 
     /**
@@ -70,5 +80,14 @@ public class WechatConfig {
      */
     public static long getUserSignInAddNumber() {
         return userSignInAddNumber;
+    }
+
+    /**
+     * Getter method for property <tt>userRewardAddNumber</tt>.
+     *
+     * @return property value of userRewardAddNumber
+     */
+    public static long getUserRewardAddNumber() {
+        return userRewardAddNumber;
     }
 }
