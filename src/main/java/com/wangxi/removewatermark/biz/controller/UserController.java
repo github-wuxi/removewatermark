@@ -46,13 +46,14 @@ public class UserController {
     /**
      * 激励
      *
-     * @param userId 用户id
-     * @return {@link BaseResult}<{@link Long}> 激励次数
+     * @param userId    用户id
+     * @param rewardNum 激励次数
+     * @return {@link BaseResult}
      */
     @RequestMapping(value = "/reward.json", method = { RequestMethod.GET, RequestMethod.POST })
     @ResponseBody
-    public BaseResult<Long> reward(String userId) {
-        return userInfoService.reward(userId);
+    public BaseResult reward(String userId, int rewardNum) {
+        return userInfoService.reward(userId, rewardNum);
     }
 
     /**

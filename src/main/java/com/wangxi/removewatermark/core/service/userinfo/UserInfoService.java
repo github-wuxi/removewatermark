@@ -26,10 +26,11 @@ public interface UserInfoService {
     /**
      * 激励
      *
-     * @param userId 用户id
-     * @return {@link BaseResult}<{@link Long}> 激励次数
+     * @param userId    用户id
+     * @param rewardNum 激励次数
+     * @return {@link BaseResult}
      */
-    BaseResult<Long> reward(String userId);
+    BaseResult reward(String userId, int rewardNum);
 
     /**
      * 查询用户信息
