@@ -114,16 +114,18 @@ public class UserInfoServiceImpl implements UserInfoService {
     /**
      * 激励
      *
-     * @param userId 用户id
-     * @return {@link BaseResult}<{@link Long}> 激励次数
+     * @param userId    用户id
+     * @param rewardNum 激励次数
+     * @return {@link BaseResult}
      */
     @Override
-    public BaseResult<Long> reward(String userId) {
+    public BaseResult reward(String userId, int rewardNum) {
         BaseResult<Long> baseResult = new BaseResult<>();
         ServiceTemplate.execute(baseResult, new ServiceCallback() {
             @Override
             public void checkParameter() {
                 AssertUtil.assertNotBlank(userId, "用户id不能为空");
+                AssertUtil.assertMin(rewardNum, 1, "激励次数不能小于1");
                 QueryWrapper<UserInfoDO> queryWrapper = new QueryWrapper<>();
                 queryWrapper.lambda().eq(UserInfoDO::getUserId, userId);
                 UserInfoDO userInfoDO = userInfoDAO.selectOne(queryWrapper);
@@ -134,14 +136,14 @@ public class UserInfoServiceImpl implements UserInfoService {
             public void process() {
                 UpdateWrapper<UserInfoDO> updateWrapper = new UpdateWrapper<>();
                 updateWrapper.eq("user_id", userId).setSql(
-                    String.format("available_number = available_number + %s", WechatConfig.getUserRewardAddNumber()));
+                    String.format("available_number = available_number + %s", rewardNum));
                 userInfoDAO.update(null, updateWrapper);
-                baseResult.setResultData(WechatConfig.getUserRewardAddNumber());
             }
 
             @Override
             public void finalLog() {
-                LOGGER.debug(String.format("用户激励，入参[userId:%s], 出参[baseResult:%s]", userId, baseResult));
+                LOGGER.debug(String.format("用户激励，入参[userId:%s, rewardNum:%s], 出参[baseResult:%s]",
+                    userId, rewardNum, baseResult));
             }
 
             @Override
