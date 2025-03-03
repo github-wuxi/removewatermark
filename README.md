@@ -1,7 +1,7 @@
 ### 简介
 本微信小程序已上线，微信扫码使用：
 
-<img src="https://intranetproxy.alipay.com/skylark/lark/0/2025/png/17056918/1739346169072-b9f0406e-d3e5-4f2b-b43a-4791bf1a5688.png" width="290" height="280"/>
+<img src="https://mdn.alipayobjects.com/huamei_jfklky/afts/img/A*a5ONR4ZdOn4AAAAAAAAAAAAAeqKkAQ/original" width="290" height="280"/>
 
 + 支持的短视频解析：抖音、小红书、快手
 + 支持微信用户头像、昵称编辑设置
