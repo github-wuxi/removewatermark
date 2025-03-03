@@ -1,5 +1,5 @@
 ### 简介
-本微信小程序已上线，微信扫码使用：
+本小程序已上线，可微信搜索：“水印一键清理宝”，也可微信扫码使用：
 
 <img src="https://mdn.alipayobjects.com/huamei_jfklky/afts/img/A*a5ONR4ZdOn4AAAAAAAAAAAAAeqKkAQ/original" width="290" height="280"/>
 
