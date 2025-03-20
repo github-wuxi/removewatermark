@@ -14,7 +14,7 @@ server:
     port: 19708
     ssl:
         enabled: true
-        key-store-password: 9jmopfh6
+        key-store-password: tsvbe0i0
         key-store-type: JKS
         key-store: classpath:www.ruirui.fun.jks
         client-auth: none
