@@ -28,6 +28,5 @@
 [【原创系列文章】微信小程序短视频去水印落地全攻略——5、结语](https://blog.csdn.net/CSDN_wx123/article/details/145994828)
 
 
-### 系列课程
-
-录制中。。。
+### 课程
++ CSDN：[微信小程序端到端课程【java版】](https://edu.csdn.net/course/detail/40395) 
